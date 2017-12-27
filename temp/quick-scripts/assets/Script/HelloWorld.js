@@ -4,6 +4,7 @@ cc._RF.push(module, '280c3rsZJJKnZ9RqbALVwtK', 'HelloWorld', __filename);
 
 "use strict";
 
+var protobuf = require("protobufjs");
 var cClientNet = require("ClientNet").ClientNet;
 
 cc.Class({
@@ -24,6 +25,12 @@ cc.Class({
         if (cc.Net == null) {
             cc.Net = new cClientNet();
         }
+        var builder = protobuf.newBuilder();
+        protobuf.protoFromFile(cc.url.raw('resources/msgconfig/Player.proto'), builder);
+
+        var PB = builder.build('grace.proto.msg');
+
+        var temp = new PB.Player();
     },
 
     start: function start() {
