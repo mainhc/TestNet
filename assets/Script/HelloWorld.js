@@ -1,3 +1,4 @@
+let protobuf = require("protobufjs");
 var cClientNet = require("ClientNet").ClientNet;
 
 cc.Class({
@@ -19,6 +20,12 @@ cc.Class({
         {
             cc.Net = new cClientNet;
         }
+        let builder = protobuf.newBuilder();
+        protobuf.protoFromFile(cc.url.raw('resources/msgconfig/Player.proto'),builder);
+        
+        let PB = builder.build('grace.proto.msg');
+        
+        var  temp = new PB.Player();
 
     },
 
