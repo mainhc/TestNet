@@ -62,13 +62,22 @@ var ClientNet = cc.Class({
 
     },
 
+    sendData:function(strData)
+    {
+        if(this.m_pWebSocket != null)
+        {
+            this.m_pWebSocket.send(strData);
+        }
+    },
+
+
     CloseNet:function()
     {
         if(this.m_pWebSocket != null)
         {
             this.m_pWebSocket.close();
         }
-    }
+    },
 
    
 

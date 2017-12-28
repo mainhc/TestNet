@@ -19,13 +19,10 @@ cc.Class({
         if(cc.Net == null)
         {
             cc.Net = new cClientNet;
-        }
-        let builder = protobuf.newBuilder();
-        protobuf.protoFromFile(cc.url.raw('resources/msgconfig/Player.proto'),builder);
-        
-        let PB = builder.build('grace.proto.msg');
-        
-        var  temp = new PB.Player();
+            cc.builder = protobuf.newBuilder();
+            protobuf.protoFromFile(cc.url.raw('resources/msgconfig/Player.proto'),cc.builder);
+        }          
+      
 
     },
 
@@ -52,6 +49,13 @@ cc.Class({
 
     touchCloseNet:function()
     {
+        let PB = cc.builder.build('grace.proto.msg');
+        var  temp = new PB.Player();
+        temp.id = 1000003;
+        temp.name = "hahahaer";
+        temp.enterTime = 222222;
+        let data = temp.toArrayBuffer();
+        cc.Net.sendData(data);
         cc.Net.CloseNet();
     },
 
