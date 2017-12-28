@@ -1,0 +1,22 @@
+{
+  "name": "testnet",
+  "version": "1.0.0",
+  "description": "Hello world new project template.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mainhc/TestNet.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mainhc/TestNet/issues"
+  },
+  "homepage": "https://github.com/mainhc/TestNet#readme",
+  "dependencies": {
+    "protobufjs": "^5.0.2"
+  }
+}
