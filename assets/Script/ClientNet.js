@@ -8,6 +8,12 @@ var ClientNet = cc.Class({
        m_pWebSocket:null,
     },
 
+    init:function()
+    {
+    },
+
+         
+
     initNet:function(svrIp,strPort)
     {
         if(svrIp=="" || svrIp==null)
