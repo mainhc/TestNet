@@ -23,8 +23,24 @@ var MsgMgr = cc.Class({
             protobuf.protoFromFile(cc.url.raw('resources/msgconfig/Player.proto'),this.m_pbBuilder);
             this.MsgMapStr= {};
             this.MsgMapId = {};
-            this.registerMsg("Player.cPlayerInfo",10001);  
+            this.registerMsgByConfig();
+            //this.registerMsg("Player.cPlayerInfo",10001);  
         }
+    },
+
+    registerMsgByConfig:function()
+    {
+        var pSelf = this;
+        cc.loader.loadRes('msgconfig/MsgRegisterMap', function(err, Cfg) 
+        {
+            var MsgCfg = Cfg;
+            for(var k in MsgCfg)
+            {
+                var tempmsgname = MsgCfg[k];
+                pSelf.registerMsg(tempmsgname,parseInt(k));
+            }
+        });
+
     },
 
     CreateMsgByID:function(msgId)

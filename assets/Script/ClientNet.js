@@ -10,9 +10,7 @@ var ClientNet = cc.Class({
 
     init:function()
     {
-    },
-
-         
+    },         
 
     initNet:function(svrIp,strPort)
     {
