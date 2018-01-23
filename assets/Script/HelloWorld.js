@@ -1,6 +1,7 @@
 
 var cClientNet = require("ClientNet").ClientNet;
 var cMsgMgr = require("MsgMgr").MsgMgr;
+var cGameInit = require("GameInit").GameInit;
 
 cc.Class({
     extends: cc.Component,
@@ -24,6 +25,10 @@ cc.Class({
         if(cc.MsgMgr == null)
         {
             cc.MsgMgr = new cMsgMgr;
+        }
+        if(cc.GameInit == null)
+        {
+            cc.GameInit = new cGameInit;
         }       
 
     },
@@ -34,7 +39,7 @@ cc.Class({
         {
             
             //cc.Net.initNet("127.0.0.1","9897");
-            cc.Net.initNet("192.168.216.81","10131");
+            cc.Net.initNet("192.168.214.64","10131");
             //cc.Net.initNet("192.168.112.100","10131"); 
             cc.MsgMgr.init();           
         }
@@ -48,6 +53,9 @@ cc.Class({
     onDestroy:function()
     {
         cc.log("+++++++++++++++++++onDestroy");
+        cc.Net = null;
+        cc.MsgMgr = null;
+        cc.GameInit = null;
     },
 
     touchCloseNet:function()
@@ -57,7 +65,7 @@ cc.Class({
         pMSg.name = "hahahaer";
         pMSg.enterTime = 222222;
         cc.MsgMgr.sendMsgToServer(pMSg);
-        cc.Net.CloseNet();
+       // cc.Net.CloseNet();
     },
 
     // called every frame

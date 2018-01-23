@@ -1,4 +1,5 @@
 let protobuf = require("protobufjs");
+let ByteBuffer = require("bytebuffer");
 
 var MsgMgr = cc.Class({
 
@@ -13,6 +14,7 @@ var MsgMgr = cc.Class({
         this.MsgMapStr[msgStr] = msgID;
         this.MsgMapId[msgID] = msgStr;
     },
+    
     init:function()
     {
         if(this.m_pbBuilder == null)
@@ -23,14 +25,6 @@ var MsgMgr = cc.Class({
             this.MsgMapId = {};
             this.registerMsg("Player.cPlayerInfo",10001);  
         }
-        // let PB = cc.builder.build('grace.proto.msg');
-        // var  temp = new PB.Player();
-        // temp.id = 1000003;
-        // temp.name = "hahahaer";
-        // temp.enterTime = 222222;
-        // let data = temp.toArrayBuffer();
-        // cc.Net.sendData(data);       
-
     },
 
     CreateMsgByID:function(msgId)
@@ -50,6 +44,14 @@ var MsgMgr = cc.Class({
         return null;
     },
 
+    MsgToDecode:function(msgId)
+    {
+        var pMSgStr =  this.MsgMapId[msgId];
+        var tempPB = this.m_pbBuilder.build(pMSgStr);
+       
+        return tempPB;
+    },
+
     CreateMsgByStr:function(msgstr)
     {
         var pMSgStr = msgstr;
@@ -61,6 +63,30 @@ var MsgMgr = cc.Class({
         let PB = this.m_pbBuilder.build(prostrs[0]);          
         var tempp = prostrs[1];
         return new PB[tempp]();
+    },
+
+    MsgRecvData:function(recvData)
+    {
+        var pMSg = cc.MsgMgr.MsgToDecode(10001);      
+         if(cc.sys.isNative)
+         {
+            var tempMsg = pMSg.decode(recvData);
+         }
+         else
+         {
+             var reader = new FileReader();
+             reader.readAsArrayBuffer(recvData);
+             reader.onload = function (e)
+             {               
+                    var buffertemp = reader.result;
+                    var tempMsg = pMSg.decode(buffertemp);
+                    cc.log("recvServer +++ "+ tempMsg.id + "  " + tempMsg.name+"  "+ tempMsg.enterTime);               
+             }
+
+         }
+         
+      
+
     },
 
     sendMsgToServer:function(cMsg)

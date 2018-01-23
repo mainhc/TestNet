@@ -45,11 +45,14 @@ var ClientNet = cc.Class({
             this.m_pWebSocket.onclose = function(evt)
             {
                  cc.log("m_pWebSocket    onclose");
+                
             };
             
             this.m_pWebSocket.onmessage = function(evt)
             {
                 cc.log("m_pWebSocket    onmessage");
+                cc.MsgMgr.MsgRecvData(evt.data);
+                 
             };
             
             this.m_pWebSocket.onerror = function(evt)
@@ -62,10 +65,8 @@ var ClientNet = cc.Class({
         {            
             cc.log(e.name + " NetError:" + e.message);
         };
-        
 
-        //this.m_pWebSocket.
-
+      
     },
 
     sendData:function(strData)
