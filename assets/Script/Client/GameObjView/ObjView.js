@@ -6,6 +6,7 @@ var ObjView = cc.Class({
     properties: {
        m_iObjId:0, 
        m_objlogic:ObjLogic,
+       //m_ObjView:null,
       
     },
 
@@ -35,7 +36,11 @@ var ObjView = cc.Class({
         if(this.m_objlogic != null)
         {
             this.m_objlogic.updataLogicObj(dt);
+            var pOpt = this.m_objlogic.getLogicPos();
+            this.setPosition(pOpt);
         }
+       
+
 
     },
 });
