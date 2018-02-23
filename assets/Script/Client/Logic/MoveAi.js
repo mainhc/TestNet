@@ -6,12 +6,19 @@ var MoveAi = cc.Class({
         m_pObj:null,
 
     },
+
     initMoveAi(pObj)
     {
         this.m_pObj = pObj;
     },
 
-    
+    updateMoveAi(dt)
+    {
+        cc.log("+++++++++updateMoveAi");
+
+    },
+
+
 
 
 

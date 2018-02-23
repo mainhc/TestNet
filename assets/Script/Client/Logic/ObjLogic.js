@@ -29,6 +29,15 @@ var ObjLogic = cc.Class({
          return this.m_Pos;
      },
 
+
+     updataLogicObj(dt)
+     {
+         if( this.m_pMoveAi != null)
+         {
+             this.m_pMoveAi.updateMoveAi(dt);
+         }
+     },
+
      
    
 });

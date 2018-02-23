@@ -4,6 +4,7 @@ var cMsgMgr = require("MsgMgr").MsgMgr;
 var cGameInit = require("GameInit").GameInit;
 var cTableMgr = require("TableMgr").tableMgr;
 var cGameObjMgr = require("GameObjMgr").GameObjMgr;
+var cObjIDMgr = require("ObjIDMgr").ObjIDMgr;
 
 
 cc.Class({
@@ -42,6 +43,11 @@ cc.Class({
             cc.GameObjMgr = new cGameObjMgr;
             cc.GameObjMgr.initGameObjMgr(this.m_pMap);
         }
+
+        if(cc.ObjIDMgr == null)
+        {
+            cc.ObjIDMgr = new cObjIDMgr;
+        }
  
     },
 
@@ -79,6 +85,10 @@ cc.Class({
         cc.Net = null;
         cc.MsgMgr = null;
         cc.GameInit = null;
+        cc.TableMgr = null;
+        cc.GameObjMgr = null;
+        cc.ObjIDMgr = null;
+
     },
 
 

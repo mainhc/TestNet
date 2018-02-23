@@ -29,12 +29,14 @@ var GameObjMgr = cc.Class({
             {
                 if(err == null)
                 {
+                    var objId = cc.ObjIDMgr.getCanUseID();
                     var pObjview = new cObjView();
                     var pObjLogic = new cObjLogic();
                     pObjLogic.initLogicObj(startPos,pConfig);                    
-                    pObjview.initObj(prefab,pObjLogic);
+                    pObjview.initObj(objId,prefab,pObjLogic);
                     var logicpos = pObjLogic.getLogicPos();
                     pObjview.setPosition(logicpos);
+                    pSelf.m_akObjMap[objId] = pObjview;
                     pSelf.m_pMap.addChild(pObjview); 
                 }
             });         
@@ -43,6 +45,14 @@ var GameObjMgr = cc.Class({
 
     updateGameObjMgr(dt)
     {
+        for(var key in this.m_akObjMap)
+        {
+            var pObj = this.m_akObjMap[key];
+            if(pObj != null)
+            {
+                pObj.updateObjView(dt);
+            }
+        }
 
     },
 
