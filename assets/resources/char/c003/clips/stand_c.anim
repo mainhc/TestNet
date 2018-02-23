@@ -1,0 +1,424 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "stand_c",
+  "_objFlags": 0,
+  "_rawFiles": null,
+  "_duration": 1,
+  "sample": 30,
+  "speed": 1,
+  "wrapMode": 2,
+  "curveData": {
+    "paths": {
+      "body": {
+        "comps": {
+          "cc.Sprite": {
+            "spriteFrame": [
+              {
+                "frame": 0,
+                "value": {
+                  "__uuid__": "42a877b3-5cf6-4667-a16d-e97e32c12941"
+                }
+              },
+              {
+                "frame": 0.1,
+                "value": {
+                  "__uuid__": "67898677-a18b-4e11-bd13-464940f05137"
+                }
+              },
+              {
+                "frame": 0.2,
+                "value": {
+                  "__uuid__": "6f21dd45-9fae-48eb-80f4-451807a9fce9"
+                }
+              },
+              {
+                "frame": 0.3,
+                "value": {
+                  "__uuid__": "72f18468-dd56-403d-bc7b-bc294840a7bd"
+                }
+              },
+              {
+                "frame": 0.4,
+                "value": {
+                  "__uuid__": "5b40cb72-15e3-40be-a86c-1558ed52c5e6"
+                }
+              },
+              {
+                "frame": 0.5,
+                "value": {
+                  "__uuid__": "cbd34ff3-88c2-4cda-ad7a-bec6e759cc78"
+                }
+              },
+              {
+                "frame": 0.6,
+                "value": {
+                  "__uuid__": "5762db37-7ebb-4950-855d-44856763b1cb"
+                }
+              },
+              {
+                "frame": 0.7,
+                "value": {
+                  "__uuid__": "1a9838ca-d0a2-419c-ae32-aaba5ad384b6"
+                }
+              },
+              {
+                "frame": 0.8,
+                "value": {
+                  "__uuid__": "b56b57c3-4c40-47f4-867a-4ab5ed7acfe3"
+                }
+              },
+              {
+                "frame": 0.9,
+                "value": {
+                  "__uuid__": "9d389519-86c6-4da1-95e1-91220b32a0e3"
+                }
+              },
+              {
+                "frame": 1,
+                "value": {
+                  "__uuid__": "42a877b3-5cf6-4667-a16d-e97e32c12941"
+                }
+              }
+            ]
+          }
+        },
+        "props": {
+          "x": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.1,
+              "value": 0
+            },
+            {
+              "frame": 0.2,
+              "value": 0
+            },
+            {
+              "frame": 0.3,
+              "value": 0
+            },
+            {
+              "frame": 0.4,
+              "value": 0
+            },
+            {
+              "frame": 0.5,
+              "value": 0
+            },
+            {
+              "frame": 0.6,
+              "value": 0
+            },
+            {
+              "frame": 0.7,
+              "value": 0
+            },
+            {
+              "frame": 0.8,
+              "value": 0
+            },
+            {
+              "frame": 0.9,
+              "value": 0
+            },
+            {
+              "frame": 1,
+              "value": 0
+            }
+          ],
+          "y": [
+            {
+              "frame": 0,
+              "value": 30
+            },
+            {
+              "frame": 0.1,
+              "value": 30
+            },
+            {
+              "frame": 0.2,
+              "value": 30
+            },
+            {
+              "frame": 0.3,
+              "value": 30
+            },
+            {
+              "frame": 0.4,
+              "value": 30
+            },
+            {
+              "frame": 0.5,
+              "value": 30
+            },
+            {
+              "frame": 0.6,
+              "value": 30
+            },
+            {
+              "frame": 0.7,
+              "value": 30
+            },
+            {
+              "frame": 0.8,
+              "value": 30
+            },
+            {
+              "frame": 0.9,
+              "value": 30
+            },
+            {
+              "frame": 1,
+              "value": 30
+            }
+          ],
+          "scaleX": [
+            {
+              "frame": 0,
+              "value": 1
+            },
+            {
+              "frame": 0.1,
+              "value": 1
+            },
+            {
+              "frame": 0.2,
+              "value": 1
+            },
+            {
+              "frame": 0.3,
+              "value": 1
+            },
+            {
+              "frame": 0.4,
+              "value": 1
+            },
+            {
+              "frame": 0.5,
+              "value": 1
+            },
+            {
+              "frame": 0.6,
+              "value": 1
+            },
+            {
+              "frame": 0.7,
+              "value": 1
+            },
+            {
+              "frame": 0.8,
+              "value": 1
+            },
+            {
+              "frame": 0.9,
+              "value": 1
+            },
+            {
+              "frame": 1,
+              "value": 1
+            }
+          ],
+          "scaleY": [
+            {
+              "frame": 0,
+              "value": 1
+            },
+            {
+              "frame": 0.1,
+              "value": 1
+            },
+            {
+              "frame": 0.2,
+              "value": 1
+            },
+            {
+              "frame": 0.3,
+              "value": 1
+            },
+            {
+              "frame": 0.4,
+              "value": 1
+            },
+            {
+              "frame": 0.5,
+              "value": 1
+            },
+            {
+              "frame": 0.6,
+              "value": 1
+            },
+            {
+              "frame": 0.7,
+              "value": 1
+            },
+            {
+              "frame": 0.8,
+              "value": 1
+            },
+            {
+              "frame": 0.9,
+              "value": 1
+            },
+            {
+              "frame": 1,
+              "value": 1
+            }
+          ],
+          "rotationX": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.1,
+              "value": 0
+            },
+            {
+              "frame": 0.2,
+              "value": 0
+            },
+            {
+              "frame": 0.3,
+              "value": 0
+            },
+            {
+              "frame": 0.4,
+              "value": 0
+            },
+            {
+              "frame": 0.5,
+              "value": 0
+            },
+            {
+              "frame": 0.6,
+              "value": 0
+            },
+            {
+              "frame": 0.7,
+              "value": 0
+            },
+            {
+              "frame": 0.8,
+              "value": 0
+            },
+            {
+              "frame": 0.9,
+              "value": 0
+            },
+            {
+              "frame": 1,
+              "value": 0
+            }
+          ],
+          "rotationY": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.1,
+              "value": 0
+            },
+            {
+              "frame": 0.2,
+              "value": 0
+            },
+            {
+              "frame": 0.3,
+              "value": 0
+            },
+            {
+              "frame": 0.4,
+              "value": 0
+            },
+            {
+              "frame": 0.5,
+              "value": 0
+            },
+            {
+              "frame": 0.6,
+              "value": 0
+            },
+            {
+              "frame": 0.7,
+              "value": 0
+            },
+            {
+              "frame": 0.8,
+              "value": 0
+            },
+            {
+              "frame": 0.9,
+              "value": 0
+            },
+            {
+              "frame": 1,
+              "value": 0
+            }
+          ],
+          "opacity": [
+            {
+              "frame": 0,
+              "value": 255,
+              "curve": "constant"
+            },
+            {
+              "frame": 0.1,
+              "value": 255,
+              "curve": "constant"
+            },
+            {
+              "frame": 0.2,
+              "value": 255,
+              "curve": "constant"
+            },
+            {
+              "frame": 0.3,
+              "value": 255,
+              "curve": "constant"
+            },
+            {
+              "frame": 0.4,
+              "value": 255,
+              "curve": "constant"
+            },
+            {
+              "frame": 0.5,
+              "value": 255,
+              "curve": "constant"
+            },
+            {
+              "frame": 0.6,
+              "value": 255,
+              "curve": "constant"
+            },
+            {
+              "frame": 0.7,
+              "value": 255,
+              "curve": "constant"
+            },
+            {
+              "frame": 0.8,
+              "value": 255,
+              "curve": "constant"
+            },
+            {
+              "frame": 0.9,
+              "value": 255,
+              "curve": "constant"
+            },
+            {
+              "frame": 1,
+              "value": 255,
+              "curve": "constant"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "events": []
+}

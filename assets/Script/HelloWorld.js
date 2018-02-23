@@ -2,22 +2,22 @@
 var cClientNet = require("ClientNet").ClientNet;
 var cMsgMgr = require("MsgMgr").MsgMgr;
 var cGameInit = require("GameInit").GameInit;
+var cTableMgr = require("TableMgr").tableMgr;
+var cGameObjMgr = require("GameObjMgr").GameObjMgr;
+
 
 cc.Class({
     extends: cc.Component,
 
     properties: {
-        label: {
-            default: null,
-            type: cc.Label
-        },
+  
         // defaults, set visually when attaching this script to the Canvas
-        text: 'Hello, World!'
+        m_pMap:null,
+        m_startPos:null,         
     },
 
     // use this for initialization
-    onLoad: function () {
-        this.label.string = this.text;        
+    onLoad: function () {       
         if(cc.Net == null)
         {
             cc.Net = new cClientNet;           
@@ -29,8 +29,20 @@ cc.Class({
         if(cc.GameInit == null)
         {
             cc.GameInit = new cGameInit;
-        }       
-
+        }
+        if(cc.TableMgr == null)
+        {
+            cc.TableMgr = new cTableMgr;
+            cc.TableMgr.initTabel();
+        }
+       
+        this.m_pMap = this.node.getChildByName("Map");  
+        if(cc.GameObjMgr == null)
+        {
+            cc.GameObjMgr = new cGameObjMgr;
+            cc.GameObjMgr.initGameObjMgr(this.m_pMap);
+        }
+ 
     },
 
     start:function()
@@ -48,6 +60,17 @@ cc.Class({
         {
             pCloseNetButton.on(cc.Node.EventType.TOUCH_START, this.touchCloseNet,this);
         }
+
+      
+
+        this.initMapPos();
+        this.m_pMap.on(cc.Node.EventType.TOUCH_START, this.onTouchBegan,this);
+        this.m_pMap.on(cc.Node.EventType.TOUCH_MOVE, this.onTouchMoved,this);
+        this.m_pMap.on(cc.Node.EventType.TOUCH_END, this.onTouchEnded,this);
+        this.m_pMap.on(cc.Node.EventType.TOUCH_CANCEL, this.onTouchCancelled,this);
+
+
+    
     },
 
     onDestroy:function()
@@ -58,18 +81,70 @@ cc.Class({
         cc.GameInit = null;
     },
 
+
+
+    initMapPos()
+    {
+        var winsize = cc.director.getWinSize();
+        this.m_pMap.setPosition(-winsize.width/2,-winsize.height/2);
+
+       
+
+
+    },
+
+    onTouchBegan:function(event)
+    {     
+        var touchPos = this.m_pMap.convertToNodeSpaceAR(event.getLocation());
+        this.m_startPos = touchPos;
+        cc.log("onTouchBegan" + "  "+touchPos.x+ "  "+touchPos.y);      
+
+    },
+
+    onTouchMoved:function(event)
+    {
+       
+        var touchPos = this.m_pMap.convertToNodeSpaceAR(event.getLocation());
+        //var touchPos = event.getLocation();
+       // var touch = event.currentTouch;
+        var touchStartPos = this.m_startPos;
+        var movePos = cc.pSub(touchPos,touchStartPos);
+        var pBeginPos = this.m_pMap.getPosition();
+        var pDesPos = cc.pAdd(pBeginPos,movePos);
+        this.m_pMap.setPosition(pDesPos);
+        cc.log("onTouchMoved" + "  "+touchPos.x+ "  "+touchPos.y);       
+
+    },
+
+    onTouchEnded:function(event)
+    {
+       cc.GameObjMgr.createGameObj(10001); 
+
+    },
+
+    onTouchCancelled:function(event)
+    {
+        cc.log("++++++++++++onTouchCancelled+++++++++");
+        this.onTouchEnded(event);
+    },
+
     touchCloseNet:function()
     {
-        var pMSg = cc.MsgMgr.CreateMsgByID(10001);
-        pMSg.id = 1000003;
-        pMSg.name = "hahahaer";
-        pMSg.enterTime = 222222;
-        cc.MsgMgr.sendMsgToServer(pMSg);
+        // var pMSg = cc.MsgMgr.CreateMsgByID(10001);
+        // pMSg.id = 1000003;
+        // pMSg.name = "hahahaer";
+        // pMSg.enterTime = 222222;
+        // cc.MsgMgr.sendMsgToServer(10001,pMSg);
        // cc.Net.CloseNet();
+      
     },
 
     // called every frame
     update: function (dt) {
+        if(cc.GameObjMgr != null)
+        {
+            cc.GameObjMgr.updateGameObjMgr(dt);
+        }
+    },   
 
-    },
 });

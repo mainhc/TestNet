@@ -98,17 +98,23 @@ var MsgMgr = cc.Class({
                     var tempMsg = pMSg.decode(buffertemp);
                     cc.log("recvServer +++ "+ tempMsg.id + "  " + tempMsg.name+"  "+ tempMsg.enterTime);               
              }
-
-         }
-         
-      
-
+         }     
     },
 
-    sendMsgToServer:function(cMsg)
+    sendMsgToServer:function(msgid,cMsg)
     {
-        let senddata = cMsg.toArrayBuffer();
-        cc.Net.sendData(senddata);     
+        
+        let senddata = cMsg.toArrayBuffer();        
+        var iBufSize = senddata.byteLength;
+        var resSend = new ArrayBuffer(iBufSize+4);
+        var msgdata = new Int8Array(senddata);
+        var ResSenddata = new Int8Array(resSend);
+        ResSenddata[0] = msgid;
+        ResSenddata[1] = msgid>>8;
+        ResSenddata[2] = msgid>>16;
+        ResSenddata[3] = msgid>>24;
+        ResSenddata.set(msgdata,4);
+        cc.Net.sendData(resSend);     
     },  
 });
 

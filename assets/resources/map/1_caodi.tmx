@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="256" tileheight="256">
+ <tileset firstgid="1" name="demomap_001" tilewidth="256" tileheight="256">
+  <image source="demomap_001.png" trans="ff00ff" width="256" height="256"/>
+ </tileset>
+ <layer name="块层 1" width="16" height="16">
+  <data encoding="base64" compression="zlib">
+   eJxjZGBgYBzFo3gUj0gMAAYeAQE=
+  </data>
+ </layer>
+</map>
