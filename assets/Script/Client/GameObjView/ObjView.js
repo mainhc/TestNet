@@ -1,4 +1,5 @@
 const ObjLogic = require("ObjLogic").ObjLogic;
+var eObjState = require("ClientDef").eObjState;
 
 var ObjView = cc.Class({
     extends: cc.Node,
@@ -6,15 +7,9 @@ var ObjView = cc.Class({
     properties: {
        m_iObjId:0, 
        m_objlogic:ObjLogic,
-       //m_ObjView:null,
+       m_pAni:null,
       
     },
-
-    //  __ctor__: function(iId) 
-    //  {
-    //     this.m_iObjId = iId;
-    //  },
-
 
     initObj(iobjId,model,objlogic){
 
@@ -27,8 +22,39 @@ var ObjView = cc.Class({
         if(pAni != null)
         {
             pAni.play("stand_c");
+            this.m_pAni = pAni;
 
         } 
+    },
+
+    getObjActionName(eState,iDir)
+    {
+        var strAction = "";
+        switch(eState)
+        {
+            case eObjState.eObjWalk:
+            {
+                strAction = "walk_";
+                break;
+            }
+            default:
+            {
+                break;
+            }
+        }
+        if(iDir ==0 || iDir==4)
+        {
+            strAction += "b";
+        }
+        else if(iDir==1 || iDir==2 || iDir==3)
+        {
+            strAction += "a";
+        }
+        else
+        {
+            strAction += "c";
+        }
+        return strAction;
     },
 
     updateObjView(dt)
@@ -39,8 +65,27 @@ var ObjView = cc.Class({
             var pOpt = this.m_objlogic.getLogicPos();
             this.setPosition(pOpt);
         }
-       
+        this.updateAction();
+    },
 
+
+
+    updateAction()
+    {
+        var eState = this.m_objlogic.getObjState();
+        var strActionName = this.getObjActionName(eState,this.m_objlogic.m_Dir);        
+        var anistatetemp = this.m_pAni.getAnimationState(strActionName); 
+        if(anistatetemp==null)
+        {
+            this.m_pAni.play(strActionName);
+        }
+        else
+        {
+            if(!anistatetemp.isPlaying)
+            {
+                this.m_pAni.play(strActionName);
+            }
+        }
 
     },
 });
