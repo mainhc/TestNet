@@ -14,7 +14,8 @@ var ObjIDMgr = cc.Class({
             var resID = this.m_akNoUseID.pop(); 
             return resID;
         }
-        return this.m_iLastID+1;
+        this.m_iLastID +=1;
+        return this.m_iLastID;
     },
    
 });

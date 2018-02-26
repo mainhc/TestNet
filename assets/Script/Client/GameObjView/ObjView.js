@@ -57,6 +57,15 @@ var ObjView = cc.Class({
         return strAction;
     },
 
+    isNeedFanZhuan(iDir)
+    {
+        if(iDir > 2 &&  iDir<6)
+        {
+            return true;
+        }
+        return false;
+    },
+
     updateObjView(dt)
     {
         if(this.m_objlogic != null)
@@ -73,7 +82,9 @@ var ObjView = cc.Class({
     updateAction()
     {
         var eState = this.m_objlogic.getObjState();
-        var strActionName = this.getObjActionName(eState,this.m_objlogic.m_Dir);        
+        var iDir = this.m_objlogic.m_Dir;
+        var strActionName = this.getObjActionName(eState,iDir); 
+        var isFanzhan = this.isNeedFanZhuan(iDir);       
         var anistatetemp = this.m_pAni.getAnimationState(strActionName); 
         if(anistatetemp==null)
         {
@@ -85,6 +96,15 @@ var ObjView = cc.Class({
             {
                 this.m_pAni.play(strActionName);
             }
+        }
+
+        if(isFanzhan)
+        {
+            this.setScale(cc.v2(-1, 1));
+        }
+        else
+        {
+            this.setScale(cc.v2(1, 1));
         }
 
     },

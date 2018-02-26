@@ -2,6 +2,7 @@ var eObjType = require("ClientDef").eObjType;
 var GridPix = require("ClientDef").GridPix;
 var cObjView = require("ObjView").ObjView;
 var cObjLogic = require("ObjLogic").ObjLogic;
+var FunctionHelp = require("HelpFunction").FuncHelp;
 
 //角色对象创建的初始位置
 const startPos = cc.p(300,300);
@@ -47,7 +48,7 @@ var GameObjMgr = cc.Class({
         this.m_akObjMap = {};
         this.initObjGrid();
     },
-    
+
     initObjGrid()
     {
         if(this.m_pMap == null)
@@ -60,10 +61,11 @@ var GameObjMgr = cc.Class({
             return;
         }
         var mapSize =  pTitleMap.getMapSize();
-        this.m_mapPixWidth = mapSize.width;
-        this.m_mapPixHeight = mapSize.height;
-        this.m_mapGridWidth = this.m_mapPixWidth/GridPix;
-        this.m_mapGridHeight = this.m_mapPixHeight/GridPix;
+        this.m_mapGridWidth = mapSize.width*4;
+        this.m_mapGridHeight = mapSize.height*4;
+        this.m_mapPixWidth = this.m_mapGridWidth*GridPix;
+        this.m_mapPixHeight = this.m_mapGridHeight*GridPix;
+     
         for(var iLoop=0;iLoop<this.m_mapGridHeight;iLoop++)
         {
             for(var jLoop=0;jLoop<this.m_mapGridWidth;jLoop++)
@@ -74,6 +76,21 @@ var GameObjMgr = cc.Class({
                 this.m_akGrid.push(ptempGrid); 
             }
         }
+    },
+
+    getObjNum()
+    {
+        return FunctionHelp.getObjectSize(this.m_akObjMap);
+    },
+
+    getMapPixWidth()
+    {
+        return this.m_mapPixWidth;
+    },
+
+    getMapPixHeight()
+    {
+        return this.m_mapPixHeight;
     },
 
     pixToGrid(pisPos)
@@ -94,7 +111,7 @@ var GameObjMgr = cc.Class({
 
     pixToIndex(pisPos)
     {
-        var GridPos = this.pixToGrid(pisPos);
+        var gridPos = this.pixToGrid(pisPos);
         var index = gridPos.y * this.m_mapGridWidth + gridPos.x;
         return index;
     },
@@ -141,14 +158,15 @@ var GameObjMgr = cc.Class({
                     var objId = cc.ObjIDMgr.getCanUseID();
                     var pObjview = new cObjView();
                     var pObjLogic = new cObjLogic();
-                    pObjLogic.initLogicObj(objId,startPos,pConfig);                    
+                    var tempPos = cc.p(2048,2048);
+                    pObjLogic.initLogicObj(objId,tempPos,pConfig);                    
                     pObjview.initObj(objId,prefab,pObjLogic);
                     var logicpos = pObjLogic.getLogicPos();
                     pObjview.setPosition(logicpos);
                     pSelf.m_akObjMap[objId] = pObjview;
                     pSelf.m_pMap.addChild(pObjview);
-                    var gridPos = this.pixToGrid(startPos);
-                    var gridtemp = this.getGridByPos(gridPos); 
+                    var gridPos = pSelf.pixToGrid(startPos);
+                    var gridtemp = pSelf.getGridByPos(gridPos); 
                     if(gridtemp != null)                    
                     {
                         gridtemp.addObjInGrid(objId);

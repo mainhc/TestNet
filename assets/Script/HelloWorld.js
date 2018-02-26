@@ -7,6 +7,7 @@ var cGameObjMgr = require("GameObjMgr").GameObjMgr;
 var cObjIDMgr = require("ObjIDMgr").ObjIDMgr;
 
 
+
 cc.Class({
     extends: cc.Component,
 
@@ -19,6 +20,8 @@ cc.Class({
 
     // use this for initialization
     onLoad: function () {       
+        cc.game.setFrameRate(30);
+
         if(cc.Net == null)
         {
             cc.Net = new cClientNet;           
@@ -98,9 +101,27 @@ cc.Class({
         var winsize = cc.director.getWinSize();
         this.m_pMap.setPosition(-winsize.width/2,-winsize.height/2);
 
-       
+        // this.schedule(function() {
 
+        //     this.doSomething();
+        // }, 0.1);
 
+        // 以秒为单位的时间间隔
+        var interval = 0.1;
+        // 重复次数
+        var repeat = 300;
+        // 开始延时
+        var delay = 1;
+        this.schedule(function() {
+            // 这里的 this 指向 component
+            this.doSomething();
+        }, interval, repeat, delay);
+
+    },
+
+    doSomething()
+    {
+         cc.GameObjMgr.createGameObj(10001); 
     },
 
     onTouchBegan:function(event)
@@ -128,7 +149,7 @@ cc.Class({
 
     onTouchEnded:function(event)
     {
-       cc.GameObjMgr.createGameObj(10001); 
+       
 
     },
 
@@ -154,7 +175,17 @@ cc.Class({
         if(cc.GameObjMgr != null)
         {
             cc.GameObjMgr.updateGameObjMgr(dt);
-        }
+            var pObjNum = this.node.getChildByName("ObjNum");
+            var pObjLabel = pObjNum.getComponent(cc.Label);
+            var iNum = cc.GameObjMgr.getObjNum();
+            pObjLabel.string = iNum;
+            // if(iNum >=300)
+            // {
+            //     this.unschedule();
+            // }
+
+        }     
+        
     },   
 
 });

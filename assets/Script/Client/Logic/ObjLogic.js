@@ -27,6 +27,9 @@ var ObjLogic = cc.Class({
          this.m_MaxHp =  charConfig.maxHp;
          this.m_pMoveAi = new cMoveAi;
          this.m_pMoveAi.initMoveAi(this);
+         var tempint = parseInt(100*Math.random());
+         var iDir = tempint%8;
+         this.m_Dir = iDir;
      },
 
      getLogicPos()
@@ -39,17 +42,31 @@ var ObjLogic = cc.Class({
          return this.m_objState;
      },
 
+     returnDir()
+     {
+         //this.m_Dir = (this.m_Dir + 4)%8;
+         var tempint = parseInt(100*Math.random());
+         this.m_Dir  = tempint%8;
+     },
+
      updataLogicObj(dt)
      {
          if( this.m_pMoveAi != null)
          {
              this.m_pMoveAi.updateMoveAi(dt);
          }
-
+         if(this.m_Pos.x <10 || this.m_Pos.x>=cc.GameObjMgr.getMapPixWidth()-10)
+         {
+             this.returnDir();
+         }
+         else if(this.m_Pos.y <10 || this.m_Pos.y>=cc.GameObjMgr.getMapPixHeight()-10)
+         {
+              this.returnDir();
+         }
          var gridIndex = cc.GameObjMgr.pixToIndex(this.m_Pos);
          if(gridIndex != this.m_GridOldIndex)
          {
-             cc.GameObjMgr.ObjChangeGrid(m_iObjId,this.m_GridOldIndex,gridIndex);
+             cc.GameObjMgr.ObjChangeGrid(this.m_iObjId,this.m_GridOldIndex,gridIndex);
              this.m_GridOldIndex = gridIndex;
          }
      },     
