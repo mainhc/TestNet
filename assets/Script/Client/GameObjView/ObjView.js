@@ -100,11 +100,13 @@ var ObjView = cc.Class({
 
         if(isFanzhan)
         {
-            this.setScale(cc.v2(-1, 1));
+            this.rotationY = 180;
+            //this.setScale(cc.v2(-1, 1));
         }
         else
         {
-            this.setScale(cc.v2(1, 1));
+            this.rotationY = 0;
+            //this.setScale(cc.v2(1, 1));
         }
 
     },
