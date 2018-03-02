@@ -34,6 +34,7 @@ var GameObjMgr = cc.Class({
     properties: {
         m_pMap:null,
         m_akObjMap:null,
+        m_pMyObjView:null,
         m_akGrid:[],
         m_mapPixWidth:0,
         m_mapPixHeight:0,
@@ -47,6 +48,7 @@ var GameObjMgr = cc.Class({
         this.m_pMap = map;
         this.m_akObjMap = {};
         this.initObjGrid();
+       
     },
 
     initObjGrid()
@@ -76,6 +78,25 @@ var GameObjMgr = cc.Class({
                 this.m_akGrid.push(ptempGrid); 
             }
         }
+    },
+
+    getMyObjView()
+    {
+        return this.m_pMyObjView;
+    },
+
+    getMyObjPos()
+    {
+        if(this.m_pMyObjView != null)
+        {
+            return this.m_pMyObjView.getPosition();
+        }
+        return cc.p(0,0);
+    },
+
+    getObjByObjID(objId)
+    {
+        return this.m_akObjMap[objId];
     },
 
     getObjNum()
@@ -141,10 +162,9 @@ var GameObjMgr = cc.Class({
         var nowGrid = this.getGridByIndex(nowindex);
         oldGrid.deleObjInGrid(objid);
         nowGrid.addObjInGrid(objid);
-
     },
 
-    createGameObj(objid)
+    createGameObj(objid,isSelf)
     {
         var pConfig = cc.TableMgr.getTabelConfigById("ObjView",objid);
         if(pConfig!= null)
@@ -158,11 +178,15 @@ var GameObjMgr = cc.Class({
                     var objId = cc.ObjIDMgr.getCanUseID();
                     var pObjview = new cObjView();
                     var pObjLogic = new cObjLogic();
-                    var tempPos = cc.p(2048,2048);
-                    pObjLogic.initLogicObj(objId,tempPos,pConfig);                    
+                    var tempPos = cc.p(480,270);
+                    pObjLogic.initLogicObj(objId,tempPos,pConfig,isSelf);                    
                     pObjview.initObj(objId,prefab,pObjLogic);
                     var logicpos = pObjLogic.getLogicPos();
                     pObjview.setPosition(logicpos);
+                    if(isSelf == true)
+                    {
+                       pSelf.m_pMyObjView =  pObjview;
+                    }
                     pSelf.m_akObjMap[objId] = pObjview;
                     pSelf.m_pMap.addChild(pObjview);
                     var gridPos = pSelf.pixToGrid(startPos);
@@ -176,6 +200,16 @@ var GameObjMgr = cc.Class({
         }
     },
 
+    playerObjTurn(objid,fTurn)
+    {
+        var pObj = this.getObjByObjID(objid);
+        if(pObj != null)
+        {
+            pObj.toTurn(fTurn);
+        }
+
+    },
+
     updateGameObjMgr(dt)
     {
         for(var key in this.m_akObjMap)
@@ -185,6 +219,11 @@ var GameObjMgr = cc.Class({
             {
                 pObj.updateObjView(dt);
             }
+        }
+
+        if(cc.LogicCmd != null)
+        {
+            cc.LogicCmd.updateLogicCmd(dt);
         }
 
     },  

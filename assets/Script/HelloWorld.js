@@ -21,7 +21,6 @@ cc.Class({
     // use this for initialization
     onLoad: function () {       
         cc.game.setFrameRate(30);
-
         if(cc.Net == null)
         {
             cc.Net = new cClientNet;           
@@ -109,7 +108,7 @@ cc.Class({
         // 以秒为单位的时间间隔
         var interval = 0.1;
         // 重复次数
-        var repeat = 300;
+        var repeat = 10;
         // 开始延时
         var delay = 1;
         this.schedule(function() {
@@ -117,18 +116,29 @@ cc.Class({
             this.doSomething();
         }, interval, repeat, delay);
 
+        this.schedule(function() {
+            // 这里的 this 指向 component
+            this.do2Something();
+        }, interval, 0, delay);
+
     },
 
     doSomething()
     {
-         cc.GameObjMgr.createGameObj(10001); 
+        // cc.GameObjMgr.createGameObj(10001,false);
+        // cc.GameObjMgr.createGameObj(10002);  
+    },
+
+    do2Something()
+    {
+        cc.GameObjMgr.createGameObj(10002,true);
     },
 
     onTouchBegan:function(event)
     {     
-        var touchPos = this.m_pMap.convertToNodeSpaceAR(event.getLocation());
-        this.m_startPos = touchPos;
-        cc.log("onTouchBegan" + "  "+touchPos.x+ "  "+touchPos.y);      
+        //var touchPos = this.m_pMap.convertToNodeSpaceAR(event.getLocation());
+       // this.m_startPos = touchPos;
+        //cc.log("onTouchBegan" + "  "+touchPos.x+ "  "+touchPos.y);      
 
     },
 
@@ -136,14 +146,13 @@ cc.Class({
     {
        
         var touchPos = this.m_pMap.convertToNodeSpaceAR(event.getLocation());
-        //var touchPos = event.getLocation();
-       // var touch = event.currentTouch;
-        var touchStartPos = this.m_startPos;
-        var movePos = cc.pSub(touchPos,touchStartPos);
-        var pBeginPos = this.m_pMap.getPosition();
-        var pDesPos = cc.pAdd(pBeginPos,movePos);
+   
+        // var touchStartPos = this.m_startPos;
+        // var movePos = cc.pSub(touchPos,touchStartPos);
+        // var pBeginPos = this.m_pMap.getPosition();
+        // var pDesPos = cc.pAdd(pBeginPos,movePos);
         this.m_pMap.setPosition(pDesPos);
-        cc.log("onTouchMoved" + "  "+touchPos.x+ "  "+touchPos.y);       
+        //cc.log("onTouchMoved" + "  "+touchPos.x+ "  "+touchPos.y);       
 
     },
 
@@ -175,15 +184,21 @@ cc.Class({
         if(cc.GameObjMgr != null)
         {
             cc.GameObjMgr.updateGameObjMgr(dt);
+
+            var myPos = cc.GameObjMgr.getMyObjPos();
+            if(myPos.x !=0 && myPos.y != 0)
+            {
+                 var winsize = cc.director.getWinSize();
+                // cc.log("myPos ++  " + myPos.x +"  " + myPos.y);
+                 this.m_pMap.setPosition(-myPos.x,-myPos.y);
+            }
+
+            //显示场上单位数
             var pObjNum = this.node.getChildByName("ObjNum");
             var pObjLabel = pObjNum.getComponent(cc.Label);
             var iNum = cc.GameObjMgr.getObjNum();
             pObjLabel.string = iNum;
-            // if(iNum >=300)
-            // {
-            //     this.unschedule();
-            // }
-
+            
         }     
         
     },   

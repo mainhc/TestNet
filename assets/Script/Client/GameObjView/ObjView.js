@@ -26,7 +26,6 @@ var ObjView = cc.Class({
 
         } 
     },
-
     getObjActionName(eState,iDir)
     {
         var strAction = "";
@@ -77,8 +76,6 @@ var ObjView = cc.Class({
         this.updateAction();
     },
 
-
-
     updateAction()
     {
         var eState = this.m_objlogic.getObjState();
@@ -109,6 +106,11 @@ var ObjView = cc.Class({
             //this.setScale(cc.v2(1, 1));
         }
 
+    },
+
+    toTurn(fDir)
+    {
+        this.m_objlogic.updateTurnDir(fDir);
     },
 });
 

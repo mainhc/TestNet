@@ -13,23 +13,29 @@ var ObjLogic = cc.Class({
          m_GridOldIndex:0,
          m_Hp:0,
          m_MaxHp:0,
-         m_Dir:6,
-         m_iSpeed:0.3,
+         m_Dir:0, //8方向
+         m_fDir:0,//具体真实的弧度 
+         m_iSpeed:3,
          m_pMoveAi:null,
          m_objState:0,
      },
 
-     initLogicObj(objid,pos,charConfig)
+     initLogicObj(objid,pos,charConfig,isSelf)
      {
          this.m_iObjId = objid;
          this.m_Pos = pos;
          this.m_Hp = charConfig.currentHp;
          this.m_MaxHp =  charConfig.maxHp;
-         this.m_pMoveAi = new cMoveAi;
-         this.m_pMoveAi.initMoveAi(this);
+        // if(isSelf != true)
+         {
+            this.m_pMoveAi = new cMoveAi;
+            this.m_pMoveAi.initMoveAi(this);
+         }        
          var tempint = parseInt(100*Math.random());
          var iDir = tempint%8;
          this.m_Dir = iDir;
+         var fdirhudu = 45 * iDir/180 * Math.PI;         
+         this.m_fDir = fdirhudu;
      },
 
      getLogicPos()
@@ -47,6 +53,60 @@ var ObjLogic = cc.Class({
          //this.m_Dir = (this.m_Dir + 4)%8;
          var tempint = parseInt(100*Math.random());
          this.m_Dir  = tempint%8;
+         var fdirhudu = 45 * this.m_Dir/180 * Math.PI;         
+         this.m_fDir = fdirhudu;
+
+     },
+
+     huduToDir(fdir)
+     {
+         var jiaodu = fdir/Math.PI * 180;
+         if(jiaodu>=-22.5 && jiaodu<22.5)
+         {
+             return 0;
+         }
+         else if(jiaodu>=22.5 && jiaodu<22.5*3)
+         {
+             return 1;
+         }
+         else if(jiaodu>=22.5*3 && jiaodu<22.5*5)
+         {
+             return 2;
+         }
+         else if(jiaodu>=22.5*5 && jiaodu<22.5*7)
+         {
+             return 3;
+         }
+         else if(jiaodu>=22.5*7 && jiaodu<22.5*8)
+         {
+             return 4;
+         }
+         else if(jiaodu>=-22.5*8 && jiaodu<-22.5*7)
+         {
+             return 4;
+         }
+         else if(jiaodu>=-22.5*7 && jiaodu<-22.5*5)
+         {
+             return 5;
+         }
+         else if(jiaodu>=-22.5*5 && jiaodu<-22.5*3)
+         {
+             return 6;
+         }
+        else if(jiaodu>=-22.5*3 && jiaodu<-22.5)
+         {
+             return 7;
+         }
+         else
+         {
+             return 0;
+         }
+     },
+
+     updateTurnDir(fdir)
+     {
+         this.m_fDir = fdir;
+         this.m_Dir =  this.huduToDir(fdir);
      },
 
      updataLogicObj(dt)

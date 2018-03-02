@@ -1,5 +1,6 @@
 let protobuf = require("protobufjs");
 let ByteBuffer = require("bytebuffer");
+var LogicCmd = require("LogicCmd").LogicCmd;
 
 var MsgMgr = cc.Class({
 
@@ -14,6 +15,12 @@ var MsgMgr = cc.Class({
         this.MsgMapStr[msgStr] = msgID;
         this.MsgMapId[msgID] = msgStr;
     },
+
+    getMsgStrByID:function(msgID)
+    {
+         var pMSgStr =  this.MsgMapId[msgID];
+         return pMSgStr;
+    },
     
     init:function()
     {
@@ -26,6 +33,12 @@ var MsgMgr = cc.Class({
             this.registerMsgByConfig();
             //this.registerMsg("Player.cPlayerInfo",10001);  
         }
+        if(cc.LogicCmd == null)
+        {
+            cc.LogicCmd = new LogicCmd;
+            cc.LogicCmd.initLogicCmd();
+        }
+
     },
 
     registerMsgByConfig:function()
@@ -82,28 +95,35 @@ var MsgMgr = cc.Class({
     },
 
     MsgRecvData:function(recvData)
-    {
-        var pMSg = cc.MsgMgr.MsgToDecode(10001);      
+    {            
          if(cc.sys.isNative)
          {
+            var pMSg = cc.MsgMgr.MsgToDecode(10004); 
             var tempMsg = pMSg.decode(recvData);
          }
          else
          {
              var reader = new FileReader();
              reader.readAsArrayBuffer(recvData);
+             var pSelf = this;
              reader.onload = function (e)
              {               
-                    var buffertemp = reader.result;
-                    var tempMsg = pMSg.decode(buffertemp);
-                    cc.log("recvServer +++ "+ tempMsg.id + "  " + tempMsg.name+"  "+ tempMsg.enterTime);               
+                    var buffertemp = reader.result;                  
+                    var idView = new Uint32Array(buffertemp,0,1);
+                    var pMSg = cc.MsgMgr.MsgToDecode(idView);
+                    var pMsgData = buffertemp.slice(4); 
+                    cc.log("(+++++++  "  + idView);                   
+                    var tempMsg = pMSg.decode(pMsgData);   
+                    var LogicMsg = {};
+                    LogicMsg.msgname = pSelf.getMsgStrByID(idView);
+                    LogicMsg.msgcmd = tempMsg;
+                    cc.LogicCmd.PushLogicMsg(LogicMsg);        
              }
          }     
     },
 
     sendMsgToServer:function(msgid,cMsg)
-    {
-        
+    {        
         let senddata = cMsg.toArrayBuffer();        
         var iBufSize = senddata.byteLength;
         var resSend = new ArrayBuffer(iBufSize+4);
