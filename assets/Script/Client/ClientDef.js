@@ -1,14 +1,13 @@
-var GridPix = 64;
+var GridPix = 256;
 
 var eObjType = cc.Enum({
-    eotNpc:0, 
-
+    eotNpc:1,
 });
 
 var eObjState = cc.Enum({
     eObjNull:-1,
-    eObjStand:0,
-    eObjWalk:1,
+    eObjStand:1,
+    eObjWalk:2,
 
 });
 

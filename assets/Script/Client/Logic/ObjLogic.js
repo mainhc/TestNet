@@ -109,6 +109,11 @@ var ObjLogic = cc.Class({
          this.m_Dir =  this.huduToDir(fdir);
      },
 
+     updateState(iState)
+     {
+         this.m_objState = iState;
+     },
+
      updataLogicObj(dt)
      {
          if( this.m_pMoveAi != null)

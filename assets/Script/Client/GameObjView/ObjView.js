@@ -6,7 +6,7 @@ var ObjView = cc.Class({
 
     properties: {
        m_iObjId:0, 
-       m_objlogic:ObjLogic,
+       m_objlogic:null,
        m_pAni:null,
       
     },
@@ -34,6 +34,11 @@ var ObjView = cc.Class({
             case eObjState.eObjWalk:
             {
                 strAction = "walk_";
+                break;
+            }
+            case eObjState.eObjStand:
+            {
+                strAction = "stand_";
                 break;
             }
             default:
@@ -111,6 +116,11 @@ var ObjView = cc.Class({
     toTurn(fDir)
     {
         this.m_objlogic.updateTurnDir(fDir);
+    },
+
+    setState(iState)
+    {
+        this.m_objlogic.updateState(iState);
     },
 });
 

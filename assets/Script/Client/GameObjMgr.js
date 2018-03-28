@@ -21,7 +21,7 @@ var ObjGrid = cc.Class({
     {
         for(var iloop=0;iloop<this.m_akObj.length;iloop++)
         {
-            var idTempObj = this.m_akObj[iloop];
+            var idTempObj = this.m_akObj[iloop];        
             if(idTempObj == idObj)
             {
                  this.m_akObj.splice(iloop,1); 
@@ -34,6 +34,9 @@ var GameObjMgr = cc.Class({
     properties: {
         m_pMap:null,
         m_akObjMap:null,
+        m_akNetIdObjID:null,
+        m_akObjIdNetID:null,
+        m_kClientId:0,
         m_pMyObjView:null,
         m_akGrid:[],
         m_mapPixWidth:0,
@@ -47,6 +50,8 @@ var GameObjMgr = cc.Class({
     {
         this.m_pMap = map;
         this.m_akObjMap = {};
+        this.m_akNetIdObjID = {};
+        this.m_akObjIdNetID = {};
         this.initObjGrid();
        
     },
@@ -63,8 +68,8 @@ var GameObjMgr = cc.Class({
             return;
         }
         var mapSize =  pTitleMap.getMapSize();
-        this.m_mapGridWidth = mapSize.width*4;
-        this.m_mapGridHeight = mapSize.height*4;
+        this.m_mapGridWidth = mapSize.width;
+        this.m_mapGridHeight = mapSize.height;
         this.m_mapPixWidth = this.m_mapGridWidth*GridPix;
         this.m_mapPixHeight = this.m_mapGridHeight*GridPix;
      
@@ -92,6 +97,11 @@ var GameObjMgr = cc.Class({
             return this.m_pMyObjView.getPosition();
         }
         return cc.p(0,0);
+    },
+
+    setClientID:function(clientId)
+    {
+        this.m_kClientId = clientId;
     },
 
     getObjByObjID(objId)
@@ -164,9 +174,9 @@ var GameObjMgr = cc.Class({
         nowGrid.addObjInGrid(objid);
     },
 
-    createGameObj(objid,isSelf)
+    createGameObj(netID,objTableid,isSelf)
     {
-        var pConfig = cc.TableMgr.getTabelConfigById("ObjView",objid);
+        var pConfig = cc.TableMgr.getTabelConfigById("ObjView",objTableid);
         if(pConfig!= null)
         {
             var strChar = "char/" + pConfig.bodyview + '/' + pConfig.bodyview;
@@ -179,6 +189,7 @@ var GameObjMgr = cc.Class({
                     var pObjview = new cObjView();
                     var pObjLogic = new cObjLogic();
                     var tempPos = cc.p(480,270);
+
                     pObjLogic.initLogicObj(objId,tempPos,pConfig,isSelf);                    
                     pObjview.initObj(objId,prefab,pObjLogic);
                     var logicpos = pObjLogic.getLogicPos();
@@ -188,6 +199,8 @@ var GameObjMgr = cc.Class({
                        pSelf.m_pMyObjView =  pObjview;
                     }
                     pSelf.m_akObjMap[objId] = pObjview;
+                    pSelf.m_akNetIdObjID[netID] = objId;
+                    pSelf.m_akObjIdNetID[objId] = netID;
                     pSelf.m_pMap.addChild(pObjview);
                     var gridPos = pSelf.pixToGrid(startPos);
                     var gridtemp = pSelf.getGridByPos(gridPos); 
@@ -210,6 +223,15 @@ var GameObjMgr = cc.Class({
 
     },
 
+    playerobjState(objid,iState)
+    {
+         var pObj = this.getObjByObjID(objid);
+        if(pObj != null)
+        {
+            pObj.setState(iState);
+        }
+    },
+
     updateGameObjMgr(dt)
     {
         for(var key in this.m_akObjMap)
@@ -219,12 +241,7 @@ var GameObjMgr = cc.Class({
             {
                 pObj.updateObjView(dt);
             }
-        }
-
-        if(cc.LogicCmd != null)
-        {
-            cc.LogicCmd.updateLogicCmd(dt);
-        }
+        }       
 
     },  
 });

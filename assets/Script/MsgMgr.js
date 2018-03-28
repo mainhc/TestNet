@@ -1,6 +1,7 @@
 let protobuf = require("protobufjs");
 let ByteBuffer = require("bytebuffer");
 var LogicCmd = require("LogicCmd").LogicCmd;
+var ClientCmd = require("ClientCmd").ClientCmd;
 
 var MsgMgr = cc.Class({
 
@@ -38,6 +39,11 @@ var MsgMgr = cc.Class({
             cc.LogicCmd = new LogicCmd;
             cc.LogicCmd.initLogicCmd();
         }
+        if(cc.ClientCmd == null)
+        {
+            cc.ClientCmd = new ClientCmd;
+            cc.ClientCmd.initClientCmd();
+        }
 
     },
 
@@ -52,6 +58,9 @@ var MsgMgr = cc.Class({
                 var tempmsgname = MsgCfg[k];
                 pSelf.registerMsg(tempmsgname,parseInt(k));
             }
+
+            //连接服务器
+            cc.Net.initNet("192.168.214.64","10131");
         });
 
     },
@@ -111,13 +120,24 @@ var MsgMgr = cc.Class({
                     var buffertemp = reader.result;                  
                     var idView = new Uint32Array(buffertemp,0,1);
                     var pMSg = cc.MsgMgr.MsgToDecode(idView);
-                    var pMsgData = buffertemp.slice(4); 
-                    cc.log("(+++++++  "  + idView);                   
-                    var tempMsg = pMSg.decode(pMsgData);   
-                    var LogicMsg = {};
-                    LogicMsg.msgname = pSelf.getMsgStrByID(idView);
-                    LogicMsg.msgcmd = tempMsg;
-                    cc.LogicCmd.PushLogicMsg(LogicMsg);        
+                    //100000以上的是单局外的消息
+                     var pMsgData = buffertemp.slice(4); 
+                    if(idView > 100000)
+                    {                                                
+                        var tempMsg = pMSg.decode(pMsgData);   
+                        var ClientMsg = {};
+                        ClientMsg.msgname = pSelf.getMsgStrByID(idView);
+                        ClientMsg.msgcmd = tempMsg;
+                        cc.ClientCmd.PushClientMsg(ClientMsg);
+                    }
+                    else
+                    {                                        
+                         var tempMsg = pMSg.decode(pMsgData);   
+                         var LogicMsg = {};
+                         LogicMsg.msgname = pSelf.getMsgStrByID(idView);
+                         LogicMsg.msgcmd = tempMsg;
+                         cc.LogicCmd.PushLogicMsg(LogicMsg);
+                    }                          
              }
          }     
     },
@@ -136,6 +156,18 @@ var MsgMgr = cc.Class({
         ResSenddata.set(msgdata,4);
         cc.Net.sendData(resSend);     
     },  
+
+    updateMsgMgr:function(dt){
+        if(cc.ClientCmd != null)
+        {
+            cc.ClientCmd.updateClientCmd(dt);
+        }   
+        if(cc.LogicCmd != null)
+        {
+            cc.LogicCmd.updateLogicCmd(dt);
+        }    
+
+    }
 });
 
 module.exports = {MsgMgr};

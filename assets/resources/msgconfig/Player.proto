@@ -3,7 +3,18 @@ syntax = "ptoto3";
 package Player;
 
 message cPlayerConnect{
-	required uint32 clinetid = 1;
+	required uint32 Clinetid = 1;
+}
+
+message cPlayerCreator{
+	required uint32 Clinetid = 1;
+}
+
+message cPlayerObjInfo{
+	required uint32 x = 1;
+	required uint32 y = 2;
+	required uint32 iHp = 3;
+	required uint32	iMaxHp = 4;
 }
 
 message cPlayerInfo {
@@ -19,4 +30,15 @@ message cPlayerItem{
 message cPlayerTrun{
 	required uint32 objLogicID =1;
 	required string fDir = 2;
+}
+
+message cPlayerState{
+	required uint32 objLogicID =1;
+	required uint32 ObjState = 2;
+}
+
+message cPlayerGridChange{
+	required uint32 objLogicID =1;
+	required uint32 x =2;
+	required uint32 y =3;
 }

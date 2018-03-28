@@ -1,3 +1,4 @@
+var eObjState = require("ClientDef").eObjState;
 cc.Class({
     extends: cc.Component,
 
@@ -72,6 +73,17 @@ cc.Class({
         this.m_fAngle = angle;
         cc.log("this.m_fAngle move+++   " + this.m_fAngle);
         this.updateArrow();
+        if(this.m_pMyBojView != null)
+        {
+            var eState = this.m_pMyBojView.m_objlogic.m_objState;
+            if(eState != eObjState.eObjWalk)
+            {
+                var pMSg = cc.MsgMgr.CreateMsgByID(10004);
+                pMSg.objLogicID = this.m_pMyBojView.m_iObjId;
+                pMSg.ObjState = eObjState.eObjWalk;       
+                cc.MsgMgr.sendMsgToServer(10004,pMSg);
+            }           
+        }        
 
     },
 
@@ -81,8 +93,13 @@ cc.Class({
         var touchPos = this.node.convertToNodeSpaceAR(event.getLocation());       
         this.pStickCenter.stopAllActions();
         this.pStickCenter.runAction(cc.moveTo(0.08, this.stickBGPosition));
-        this.m_fAngle = 0.0;
+        //this.m_fAngle = 0.0;
         this.m_pArrow.active = false;      
+
+         var pMSg = cc.MsgMgr.CreateMsgByID(10004);
+         pMSg.objLogicID = this.m_pMyBojView.m_iObjId;
+         pMSg.ObjState = eObjState.eObjStand;       
+         cc.MsgMgr.sendMsgToServer(10004,pMSg);
 
     },
 
@@ -118,6 +135,6 @@ cc.Class({
             pMSg.objLogicID = this.m_pMyBojView.m_iObjId;
             pMSg.fDir = this.m_fOldAngle;       
             cc.MsgMgr.sendMsgToServer(10003,pMSg);
-        }
+        }      
     },
 });

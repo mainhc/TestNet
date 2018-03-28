@@ -601,21 +601,12 @@
       "__id__": 9
     },
     "_enabled": true,
+    "m_pMyBojView": null,
     "stickBGR": 0,
     "m_pArrow": null,
     "pStickCenter": null,
-    "m_fAngle": 0
-  },
-  {
-    "__type__": "280c3rsZJJKnZ9RqbALVwtK",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 2
-    },
-    "_enabled": true,
-    "m_pMap": null,
-    "m_startPos": null
+    "m_fAngle": 0,
+    "m_fOldAngle": 0
   },
   {
     "__type__": "cc.Canvas",
@@ -632,5 +623,16 @@
     },
     "_fitWidth": true,
     "_fitHeight": true
+  },
+  {
+    "__type__": "90a13tsR+BDL64LDj6nkhh3",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 2
+    },
+    "_enabled": true,
+    "m_pMap": null,
+    "m_startPos": null
   }
 ]
