@@ -1,19 +1,19 @@
 var ClientGuiCmd = cc.Class({
      properties: {
            GuiMsgHandle:null,
+           GuiMsgObjThis:null,
            akClientGuiMsg:[],
      },
 
     initClientGuiCmd:function()
     {
         this.GuiMsgHandle = {};
-        //this.GuiMsgHandle["ui.updatezhunbei"] = this.onPlayerConnect;
-
-
+        this.GuiMsgObjThis = {};
     },
 
-    registerClientGuiMsg:function(msgname,func){
+    registerClientGuiMsg:function(msgname,func,pObjThis){
         this.GuiMsgHandle[msgname] = func;
+        this.GuiMsgObjThis[msgname] = pObjThis;
     },
 
     updateClientGuiCmd:function(dt){
@@ -32,9 +32,10 @@ var ClientGuiCmd = cc.Class({
     DoHandleGuiMsg:function(clientguiMSg)
     {
         var msgFun = this.GuiMsgHandle[clientguiMSg.UiMsgName];
+        var msgObjThis = this.GuiMsgObjThis[clientguiMSg.UiMsgName];
         if(msgFun != null)
         {
-            msgFun(clientguiMSg.akMsgParame);
+            msgFun(clientguiMSg.akMsgParame,msgObjThis);
         }
     },   
    

@@ -52,5 +52,9 @@ cc.Class({
        }       
     },
 
+    onDestroy:function(){
+        cc.log("onDestroy+++++++main");
+    }
+
   
 });

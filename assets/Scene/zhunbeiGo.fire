@@ -553,6 +553,12 @@
     "_enabled": true,
     "m_pPlayerID": {
       "__id__": 11
+    },
+    "m_pPlayerNum": {
+      "__id__": 7
+    },
+    "m_pBeginTime": {
+      "__id__": 9
     }
   }
 ]
