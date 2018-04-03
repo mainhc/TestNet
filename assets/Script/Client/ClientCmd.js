@@ -9,6 +9,7 @@ var ClientCmd = cc.Class({
         this.MsgHandle = {};
         this.MsgHandle["Player.cPlayerConnect"] = this.onPlayerConnect;
         this.MsgHandle["Player.cPlayerCreator"] = this.onPlayerCreator;
+        this.MsgHandle["Player.cUiMessage"] = this.onUiMessage;
 
     },
 
@@ -50,6 +51,11 @@ var ClientCmd = cc.Class({
         {
            // cc.GameObjMgr.createGameObj(clientid,10002,false);
         }
+    },
+
+    onUiMessage:function(msgcmd){
+
+
     },
 
    

@@ -50,8 +50,7 @@ cc.Class({
        if(cc.MsgMgr != null)
        {
              cc.MsgMgr.updateMsgMgr(dt);
-       } 
-      
+       }       
     },
 
   

@@ -2,6 +2,7 @@ let protobuf = require("protobufjs");
 let ByteBuffer = require("bytebuffer");
 var LogicCmd = require("LogicCmd").LogicCmd;
 var ClientCmd = require("ClientCmd").ClientCmd;
+var ClientGuiCmd = require("ClientGuiCmd").ClientGuiCmd;
 
 var MsgMgr = cc.Class({
 
@@ -43,6 +44,10 @@ var MsgMgr = cc.Class({
         {
             cc.ClientCmd = new ClientCmd;
             cc.ClientCmd.initClientCmd();
+        }
+        if(cc.ClientGuiCmd === undefined){
+            cc.ClientGuiCmd = new ClientGuiCmd;
+            cc.ClientGuiCmd.initClientGuiCmd();
         }
 
     },
@@ -162,6 +167,9 @@ var MsgMgr = cc.Class({
         {
             cc.ClientCmd.updateClientCmd(dt);
         }   
+        if(cc.ClientGuiCmd !== undefined){
+            cc.ClientGuiCmd.updateClientGuiCmd(dt);
+        }
         if(cc.LogicCmd != null)
         {
             cc.LogicCmd.updateLogicCmd(dt);
