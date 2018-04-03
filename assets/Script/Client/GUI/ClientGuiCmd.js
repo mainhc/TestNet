@@ -26,26 +26,17 @@ var ClientGuiCmd = cc.Class({
     },
 
     PushClientGuiMsg:function(logicMSg){
-        this.akClientMsg.push(logicMSg)
+        this.akClientGuiMsg.push(logicMSg)
     },
 
     DoHandleGuiMsg:function(clientguiMSg)
     {
-        var msgFun = this.GuiMsgHandle[clientguiMSg.msgname];
+        var msgFun = this.GuiMsgHandle[clientguiMSg.UiMsgName];
         if(msgFun != null)
         {
-            msgFun(clientguiMSg.msgcmd);
+            msgFun(clientguiMSg.akMsgParame);
         }
-    },
-
-    onPlayerConnect:function(msgcmd)
-    {
-        cc.PlayerInfo.setPlayerId(msgcmd.Clinetid);
-        cc.director.loadScene("zhunbeiGo");
-        //cc.GameObjMgr.setClientID(msgcmd.Clinetid);
-        //cc.GameObjMgr.createGameObj(msgcmd.Clinetid,10002,true);
-    }, 
-   
+    },   
    
 });
 module.exports = {ClientGuiCmd};

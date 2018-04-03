@@ -20,6 +20,8 @@ cc.Class({
 
     onUpdataZhunBeiData(msgdata){
 
+        cc.log("+++++++onUpdataZhunBeiData");
+
     }
 
    

@@ -45,8 +45,7 @@ cc.Class({
 
     },
 
-    update: function (dt) {
-
+    update: function (dt) {     
        if(cc.MsgMgr != null)
        {
              cc.MsgMgr.updateMsgMgr(dt);

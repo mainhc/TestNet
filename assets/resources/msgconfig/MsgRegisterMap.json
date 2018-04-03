@@ -4,5 +4,6 @@
    "10003":"Player.cPlayerTrun",
    "10004":"Player.cPlayerState",
    "100001":"Player.cPlayerConnect",
-   "100002":"Player.cPlayerCreator"
+   "100002":"Player.cPlayerCreator",
+   "100003":"Player.cUiMessage"
 }

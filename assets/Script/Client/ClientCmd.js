@@ -54,6 +54,9 @@ var ClientCmd = cc.Class({
     },
 
     onUiMessage:function(msgcmd){
+        if(cc.ClientGuiCmd !== undefined){
+            cc.ClientGuiCmd.PushClientGuiMsg(msgcmd);
+        }
 
 
     },
