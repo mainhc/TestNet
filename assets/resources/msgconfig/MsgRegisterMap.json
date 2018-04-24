@@ -5,5 +5,7 @@
    "10004":"Player.cPlayerState",
    "100001":"Player.cPlayerConnect",
    "100002":"Player.cPlayerCreator",
-   "100003":"Player.cUiMessage"
+   "100003":"Player.cUiMessage",
+   "100004":"Player.cGameRaceStart",
+   "200001":"Player.c2sClientGameWorldOK"
 }

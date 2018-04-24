@@ -174,7 +174,7 @@ var GameObjMgr = cc.Class({
         nowGrid.addObjInGrid(objid);
     },
 
-    createGameObj(netID,objTableid,isSelf)
+    createGameObj(netID,objTableid,Pos,isSelf)
     {
         var pConfig = cc.TableMgr.getTabelConfigById("ObjView",objTableid);
         if(pConfig!= null)
@@ -188,7 +188,7 @@ var GameObjMgr = cc.Class({
                     var objId = cc.ObjIDMgr.getCanUseID();
                     var pObjview = new cObjView();
                     var pObjLogic = new cObjLogic();
-                    var tempPos = cc.p(480,270);
+                    var tempPos = Pos;
 
                     pObjLogic.initLogicObj(objId,tempPos,pConfig,isSelf);                    
                     pObjview.initObj(objId,prefab,pObjLogic);

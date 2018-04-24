@@ -30,6 +30,10 @@ cc.Class({
         {
             cc.ObjIDMgr = new cObjIDMgr;
         }
+        
+         var pMSg = cc.MsgMgr.CreateMsgByID(200001);
+         pMSg.myClientID = cc.PlayerInfo.getMyPlayerID();
+         cc.MsgMgr.sendMsgToServer(200001,pMSg);
  
     },
 
@@ -45,15 +49,11 @@ cc.Class({
         this.m_pMap.on(cc.Node.EventType.TOUCH_START, this.onTouchBegan,this);
         this.m_pMap.on(cc.Node.EventType.TOUCH_MOVE, this.onTouchMoved,this);
         this.m_pMap.on(cc.Node.EventType.TOUCH_END, this.onTouchEnded,this);
-        this.m_pMap.on(cc.Node.EventType.TOUCH_CANCEL, this.onTouchCancelled,this);
-
-
-    
+        this.m_pMap.on(cc.Node.EventType.TOUCH_CANCEL, this.onTouchCancelled,this);    
     },
 
     onDestroy:function()
     {
-        cc.log("+++++++++++++++++++onDestroy");
         cc.Net = null;
         cc.MsgMgr = null;
         cc.GameInit = null;
@@ -68,40 +68,7 @@ cc.Class({
     {
         var winsize = cc.director.getWinSize();
         this.m_pMap.setPosition(-winsize.width/2,-winsize.height/2);
-
-        // this.schedule(function() {
-
-        //     this.doSomething();
-        // }, 0.1);
-
-        // // 以秒为单位的时间间隔
-        // var interval = 0.1;
-        // // 重复次数
-        // var repeat = 10;
-        // // 开始延时
-        // var delay = 1;
-        // this.schedule(function() {
-        //     // 这里的 this 指向 component
-        //     this.doSomething();
-        // }, interval, repeat, delay);
-
-        // this.schedule(function() {
-        //     // 这里的 this 指向 component
-        //     this.do2Something();
-        // }, interval, 0, delay);
-
-    },
-
-    // doSomething()
-    // {
-    //     // cc.GameObjMgr.createGameObj(10001,false);
-    //     // cc.GameObjMgr.createGameObj(10002);  
-    // },
-
-    // do2Something()
-    // {
-    //     cc.GameObjMgr.createGameObj(10002,true);
-    // },
+    },  
 
     onTouchBegan:function(event)
     {     
@@ -159,13 +126,11 @@ cc.Class({
                 // cc.log("myPos ++  " + myPos.x +"  " + myPos.y);
                  this.m_pMap.setPosition(-myPos.x,-myPos.y);
             }
-
             //显示场上单位数
             var pObjNum = this.node.getChildByName("ObjNum");
             var pObjLabel = pObjNum.getComponent(cc.Label);
             var iNum = cc.GameObjMgr.getObjNum();
-            pObjLabel.string = iNum;
-            
+            pObjLabel.string = iNum;            
         }     
         
     },   

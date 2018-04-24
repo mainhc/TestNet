@@ -10,6 +10,7 @@ var ClientCmd = cc.Class({
         this.MsgHandle["Player.cPlayerConnect"] = this.onPlayerConnect;
         this.MsgHandle["Player.cPlayerCreator"] = this.onPlayerCreator;
         this.MsgHandle["Player.cUiMessage"] = this.onUiMessage;
+        this.MsgHandle["Player.cGameRaceStart"] = this.onGameRaceStart;
 
     },
 
@@ -49,7 +50,11 @@ var ClientCmd = cc.Class({
         var myClientId = cc.PlayerInfo.getMyPlayerID();
         if(clientid != myClientId)
         {
-           // cc.GameObjMgr.createGameObj(clientid,10002,false);
+           cc.GameObjMgr.createGameObj(clientid,10002,cc.p(400,300),false);
+        }
+        else
+        {
+            cc.GameObjMgr.createGameObj(myClientId,10002,cc.p(400,300),true);
         }
     },
 
@@ -57,9 +62,12 @@ var ClientCmd = cc.Class({
         if(cc.ClientGuiCmd !== undefined){
             cc.ClientGuiCmd.PushClientGuiMsg(msgcmd);
         }
-
-
     },
+
+    onGameRaceStart:function(msgcmd){
+         cc.director.loadScene("gameworld");
+        // cc.GameObjMgr.createGameObj(msgcmd.Clinetid,10002,true);
+    }
 
    
    

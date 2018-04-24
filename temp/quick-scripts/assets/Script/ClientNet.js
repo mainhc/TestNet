@@ -1,5 +1,5 @@
-"use strict";
-cc._RF.push(module, '9a860BP1jBOBqNIamRZgIRX', 'ClientNet');
+(function() {"use strict";var __module = CC_EDITOR ? module : {exports:{}};var __filename = 'preview-scripts/assets/Script/ClientNet.js';var __require = CC_EDITOR ? function (request) {return cc.require(request, require);} : function (request) {return cc.require(request, __filename);};function __define (exports, require, module) {"use strict";
+cc._RF.push(module, '9a860BP1jBOBqNIamRZgIRX', 'ClientNet', __filename);
 // Script/ClientNet.js
 
 "use strict";
@@ -11,6 +11,8 @@ var ClientNet = cc.Class({
         m_strIpPort: "",
         m_pWebSocket: null
     },
+
+    init: function init() {},
 
     initNet: function initNet(svrIp, strPort) {
         if (svrIp == "" || svrIp == null) {
@@ -40,6 +42,7 @@ var ClientNet = cc.Class({
 
             this.m_pWebSocket.onmessage = function (evt) {
                 cc.log("m_pWebSocket    onmessage");
+                cc.MsgMgr.MsgRecvData(evt.data);
             };
 
             this.m_pWebSocket.onerror = function (evt) {
@@ -48,8 +51,12 @@ var ClientNet = cc.Class({
         } catch (e) {
             cc.log(e.name + " NetError:" + e.message);
         };
+    },
 
-        //this.m_pWebSocket.
+    sendData: function sendData(strData) {
+        if (this.m_pWebSocket != null) {
+            this.m_pWebSocket.send(strData);
+        }
     },
 
     CloseNet: function CloseNet() {
@@ -67,3 +74,15 @@ var ClientNet = cc.Class({
 module.exports = { ClientNet: ClientNet };
 
 cc._RF.pop();
+        }
+        if (CC_EDITOR) {
+            __define(__module.exports, __require, __module);
+        }
+        else {
+            cc.registerModuleFunc(__filename, function () {
+                __define(__module.exports, __require, __module);
+            });
+        }
+        })();
+        //# sourceMappingURL=ClientNet.js.map
+        
