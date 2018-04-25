@@ -87,7 +87,7 @@ cc.Class({
         // var movePos = cc.pSub(touchPos,touchStartPos);
         // var pBeginPos = this.m_pMap.getPosition();
         // var pDesPos = cc.pAdd(pBeginPos,movePos);
-        this.m_pMap.setPosition(pDesPos);
+       // this.m_pMap.setPosition(pDesPos);
         //cc.log("onTouchMoved" + "  "+touchPos.x+ "  "+touchPos.y);       
 
     },
@@ -130,7 +130,9 @@ cc.Class({
             var pObjNum = this.node.getChildByName("ObjNum");
             var pObjLabel = pObjNum.getComponent(cc.Label);
             var iNum = cc.GameObjMgr.getObjNum();
-            pObjLabel.string = iNum;            
+            pObjLabel.string = iNum;  
+
+            cc.GameObjMgr.updateGameObjMgr(dt);          
         }     
         
     },   

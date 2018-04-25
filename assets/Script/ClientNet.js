@@ -33,22 +33,23 @@ var ClientNet = cc.Class({
             {
                 cc.log("m_pWebSocket    onopen");
                 pSelf.m_pWebSocket.send("my clinet go01");
-                pSelf.m_pWebSocket.send("my clinet go02");
-                pSelf.m_pWebSocket.send("my clinet go03");
-                pSelf.m_pWebSocket.send("my clinet go04");
-                pSelf.m_pWebSocket.send("my clinet go05");
+               // pSelf.m_pWebSocket.send("my clinet go02");
+               // pSelf.m_pWebSocket.send("my clinet go03");
+               // pSelf.m_pWebSocket.send("my clinet go04");
+               // pSelf.m_pWebSocket.send("my clinet go05");
                
             };
                 
             this.m_pWebSocket.onclose = function(evt)
             {
                  cc.log("m_pWebSocket    onclose");
+
                 
             };
             
             this.m_pWebSocket.onmessage = function(evt)
             {
-                cc.log("m_pWebSocket    onmessage");
+                //cc.log("m_pWebSocket    onmessage");
                 cc.MsgMgr.MsgRecvData(evt.data);
                  
             };

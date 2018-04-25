@@ -127,22 +127,49 @@ var MsgMgr = cc.Class({
                     var pMSg = cc.MsgMgr.MsgToDecode(idView);
                     //100000以上的是单局外的消息
                      var pMsgData = buffertemp.slice(4); 
-                    if(idView > 100000)
-                    {                                                
-                        var tempMsg = pMSg.decode(pMsgData);   
-                        var ClientMsg = {};
-                        ClientMsg.msgname = pSelf.getMsgStrByID(idView);
-                        ClientMsg.msgcmd = tempMsg;
-                        cc.ClientCmd.PushClientMsg(ClientMsg);
+                    if(idView == 100000)
+                    {
+                        var currentFram = new Uint32Array(pMsgData,0,1);  
+                        pMsgData = pMsgData.slice(4);
+                        var iMsgSize = new Uint32Array(pMsgData,0,1);                       
+                        pMsgData = pMsgData.slice(4);
+                        cc.log("++++100000++  " + currentFram+ " "+iMsgSize)
+                        for(let iloop=0;iloop<iMsgSize;iloop++)
+                        {
+                            var iSubMsgLen = new Uint32Array(pMsgData,0,1);
+                            var idtempView = new Uint32Array(pMsgData,4,1);
+                            var pSubMsgData = new Uint8Array(pMsgData,8,parseInt(iSubMsgLen)-4);
+                            pMsgData = pMsgData.slice(parseInt(iSubMsgLen)+4);                      
+
+                            var pSubMSg = cc.MsgMgr.MsgToDecode(idtempView);
+                            var tempMsg = pSubMSg.decode(pSubMsgData);   
+                            var LogicMsg = {};
+                            LogicMsg.msgname = pSelf.getMsgStrByID(idtempView);
+                            LogicMsg.msgcmd = tempMsg;
+                            cc.LogicCmd.PushLogicMsg(LogicMsg);
+                        }
                     }
                     else
-                    {                                        
-                         var tempMsg = pMSg.decode(pMsgData);   
-                         var LogicMsg = {};
-                         LogicMsg.msgname = pSelf.getMsgStrByID(idView);
-                         LogicMsg.msgcmd = tempMsg;
-                         cc.LogicCmd.PushLogicMsg(LogicMsg);
-                    }                          
+                    {
+                         if(idView > 100000)
+                         {                                                
+                            var tempMsg = pMSg.decode(pMsgData);   
+                            var ClientMsg = {};
+                            ClientMsg.msgname = pSelf.getMsgStrByID(idView);
+                            ClientMsg.msgcmd = tempMsg;
+                            cc.ClientCmd.PushClientMsg(ClientMsg);
+                        }
+                        else
+                        {                                        
+                            var tempMsg = pMSg.decode(pMsgData);   
+                            var LogicMsg = {};
+                            LogicMsg.msgname = pSelf.getMsgStrByID(idView);
+                            LogicMsg.msgcmd = tempMsg;
+                            cc.LogicCmd.PushLogicMsg(LogicMsg);
+                        }                       
+
+                    }
+                      
              }
          }     
     },

@@ -16,7 +16,7 @@ var LogicCmd = cc.Class({
     updateLogicCmd(dt){
         if(this.akLogicMsg.length > 0)
         {
-            cc.log("+++updateLogicCmd+++" + this.akLogicMsg.length);
+           // cc.log("+++updateLogicCmd+++" + this.akLogicMsg.length);
             var logicmsg = this.akLogicMsg.shift();
             this.DoHandleMsg(logicmsg);
         }
