@@ -4,6 +4,28 @@ var LogicCmd = require("LogicCmd").LogicCmd;
 var ClientCmd = require("ClientCmd").ClientCmd;
 var ClientGuiCmd = require("ClientGuiCmd").ClientGuiCmd;
 
+protobuf.loadProtoFile = function(filename, callback, builder) { 
+    if (callback && typeof callback === 'object') 
+        builder = callback, 
+        callback = null; 
+    else if (!callback || typeof callback !== 'function') 
+        callback = null; 
+    if (callback) 
+        return cc.loader.load(typeof filename === 'string' ? filename : filename["root"]+"/"+filename["file"], function(error, contents) { 
+            if (contents === null) { 
+                callback(Error("Failed to fetch file")); 
+                return; 
+            } 
+            try { 
+                callback(error, protobuf.loadProto(contents, builder, filename)); 
+            } catch (e) { 
+                callback(e); 
+            } 
+        }); 
+    var contents = cc.loader.load(typeof filename === 'object' ? filename["root"]+"/"+filename["file"] : filename); 
+    return contents === null ? null : protobuf.loadProto(contents, builder, filename); 
+};
+
 var MsgMgr = cc.Class({
 
     properties: {
@@ -29,7 +51,12 @@ var MsgMgr = cc.Class({
         if(this.m_pbBuilder == null)
         {
             this.m_pbBuilder = protobuf.newBuilder();
-            protobuf.protoFromFile(cc.url.raw('resources/msgconfig/Player.proto'),this.m_pbBuilder);
+            let tempProto = cc.url.raw('resources/msgconfig/Player.proto');
+            var callfun = function(error, builder){
+                console.log("call ++= is ok");
+               // var tempPB = builder.build("Player.cPlayerConnect");
+            };
+            protobuf.loadProtoFile(tempProto,callfun,this.m_pbBuilder);
             this.MsgMapStr= {};
             this.MsgMapId = {};
             this.registerMsgByConfig();
@@ -66,6 +93,7 @@ var MsgMgr = cc.Class({
 
             //连接服务器
             cc.Net.initNet("192.168.214.64","10131");
+            //cc.Net.initNet("127.0.0.1","1440");
         });
 
     },
@@ -109,69 +137,61 @@ var MsgMgr = cc.Class({
     },
 
     MsgRecvData:function(recvData)
-    {            
-         if(cc.sys.isNative)
-         {
-            var pMSg = cc.MsgMgr.MsgToDecode(10004); 
-            var tempMsg = pMSg.decode(recvData);
-         }
-         else
-         {
-             var reader = new FileReader();
-             reader.readAsArrayBuffer(recvData);
-             var pSelf = this;
-             reader.onload = function (e)
-             {               
-                    var buffertemp = reader.result;                  
-                    var idView = new Uint32Array(buffertemp,0,1);
-                    var pMSg = cc.MsgMgr.MsgToDecode(idView);
-                    //100000以上的是单局外的消息
-                     var pMsgData = buffertemp.slice(4); 
-                    if(idView == 100000)
-                    {
-                        var currentFram = new Uint32Array(pMsgData,0,1);  
-                        pMsgData = pMsgData.slice(4);
-                        var iMsgSize = new Uint32Array(pMsgData,0,1);                       
-                        pMsgData = pMsgData.slice(4);
-                        cc.log("++++100000++  " + currentFram+ " "+iMsgSize)
-                        for(let iloop=0;iloop<iMsgSize;iloop++)
-                        {
-                            var iSubMsgLen = new Uint32Array(pMsgData,0,1);
-                            var idtempView = new Uint32Array(pMsgData,4,1);
-                            var pSubMsgData = new Uint8Array(pMsgData,8,parseInt(iSubMsgLen)-4);
-                            pMsgData = pMsgData.slice(parseInt(iSubMsgLen)+4);                      
+    {   
+        var pMsgData = recvData;
+        var dataview = new DataView(recvData);
+        var datalen = dataview.byteLength;
+        var idView =  dataview.getUint32(0,true);
+        pMsgData = pMsgData.slice(4);
+        var pMSg = cc.MsgMgr.MsgToDecode(idView);
+        if(idView == 100000)
+        {
+                var currentFram = new Uint32Array(pMsgData,0,1);
+                pMsgData = pMsgData.slice(4);              
+                var iMsgSize =new Uint32Array(pMsgData,0,1); 
+                pMsgData = pMsgData.slice(4);                  
+                cc.log("++++100000++  " + currentFram+ " "+iMsgSize);
+                             
+                for(let iloop=0;iloop<iMsgSize;iloop++)
+                {
+                        var iSubMsgLen = new Uint32Array(pMsgData,0,1);
+                        var idtempView = new Uint32Array(pMsgData,4,1);
+                        var pSubMsgData = new Uint8Array(pMsgData,8,parseInt(iSubMsgLen)-4);
+                        pMsgData = pMsgData.slice(parseInt(iSubMsgLen)+4);                      
 
-                            var pSubMSg = cc.MsgMgr.MsgToDecode(idtempView);
-                            var tempMsg = pSubMSg.decode(pSubMsgData);   
-                            var LogicMsg = {};
-                            LogicMsg.msgname = pSelf.getMsgStrByID(idtempView);
-                            LogicMsg.msgcmd = tempMsg;
-                            cc.LogicCmd.PushLogicMsg(LogicMsg);
-                        }
-                    }
-                    else
-                    {
-                         if(idView > 100000)
-                         {                                                
-                            var tempMsg = pMSg.decode(pMsgData);   
-                            var ClientMsg = {};
-                            ClientMsg.msgname = pSelf.getMsgStrByID(idView);
-                            ClientMsg.msgcmd = tempMsg;
-                            cc.ClientCmd.PushClientMsg(ClientMsg);
-                        }
-                        else
-                        {                                        
-                            var tempMsg = pMSg.decode(pMsgData);   
-                            var LogicMsg = {};
-                            LogicMsg.msgname = pSelf.getMsgStrByID(idView);
-                            LogicMsg.msgcmd = tempMsg;
-                            cc.LogicCmd.PushLogicMsg(LogicMsg);
-                        }                       
+                        var pSubMSg = cc.MsgMgr.MsgToDecode(idtempView);
+                        var tempMsg = pSubMSg.decode(pSubMsgData);   
+                        var LogicMsg = {};
+                        LogicMsg.msgname = this.getMsgStrByID(idtempView);
+                        LogicMsg.msgcmd = tempMsg;
+                        cc.LogicCmd.PushLogicMsg(LogicMsg);
+                }
+        }
+        else
+        {
+                if(idView > 100000)
+                {                                                            
+                    var tempMsg = pMSg.decode(pMsgData);   
+                    var ClientMsg = {};
+                    ClientMsg.msgname = this.getMsgStrByID(idView);
+                    ClientMsg.msgcmd = tempMsg;
+                    cc.ClientCmd.PushClientMsg(ClientMsg);
+                }
+                else
+                {                                                      
+                    var tempMsg = pMSg.decode(pMsgData);   
+                    var LogicMsg = {};
+                    LogicMsg.msgname = this.getMsgStrByID(idView);
+                    LogicMsg.msgcmd = tempMsg;
+                    cc.LogicCmd.PushLogicMsg(LogicMsg);
+                }                       
 
-                    }
-                      
-             }
-         }     
+        }
+
+
+
+       
+      
     },
 
     sendMsgToServer:function(msgid,cMsg)

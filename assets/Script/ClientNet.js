@@ -28,6 +28,7 @@ var ClientNet = cc.Class({
         try
         {
             this.m_pWebSocket = new WebSocket(strWs);
+            this.m_pWebSocket.binaryType = "arraybuffer";
             var pSelf = this;
             this.m_pWebSocket.onopen = function(evt)
             {
