@@ -93,7 +93,7 @@ var MsgMgr = cc.Class({
 
             //连接服务器
             cc.Net.initNet("192.168.214.64","10131");
-            //cc.Net.initNet("127.0.0.1","1440");
+            //cc.Net.initNet("127.0.0.1","1440");          
         });
 
     },
@@ -206,7 +206,15 @@ var MsgMgr = cc.Class({
         ResSenddata[2] = msgid>>16;
         ResSenddata[3] = msgid>>24;
         ResSenddata.set(msgdata,4);
-        cc.Net.sendData(resSend);     
+        if(cc.Net.m_pSingleGame)
+        {
+            this.MsgRecvData(resSend);
+        }
+        else
+        {
+            cc.Net.sendData(resSend);
+        }
+             
     },  
 
     updateMsgMgr:function(dt){

@@ -45,7 +45,7 @@
     "_globalZOrder": 0,
     "_opacityModifyRGB": false,
     "groupIndex": 0,
-    "autoReleaseAssets": null
+    "autoReleaseAssets": false
   },
   {
     "__type__": "cc.Node",
@@ -149,8 +149,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 4096,
-      "height": 4096
+      "width": 1280,
+      "height": 1280
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -170,7 +170,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "块层 1",
+    "_name": "map",
     "_objFlags": 0,
     "_parent": {
       "__id__": 3
@@ -184,7 +184,7 @@
       }
     ],
     "_prefab": null,
-    "_id": "edwEdB7sdNvJ6Bz/IhEklA",
+    "_id": "cfuyv2Mi1CZ7R8BVcV58uZ",
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
@@ -201,8 +201,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 4096,
-      "height": 4096
+      "width": 1280,
+      "height": 1280
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -274,7 +274,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 97.87,
+      "width": 98,
       "height": 40
     },
     "_rotationX": 0,

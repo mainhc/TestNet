@@ -18,14 +18,25 @@ var ObjLogic = cc.Class({
          m_iSpeed:3,
          m_pMoveAi:null,
          m_objState:0,
+         m_iType:0,
+         m_pathPos:[],
      },
 
      initLogicObj(objid,pos,charConfig,isSelf)
      {
          this.m_iObjId = objid;
-         this.m_Pos = pos;
+         if(pos.x==0 && pos.y==0)
+         {
+            // var pathKey = charConfig.pathId;
+         }
+         else
+         {
+             this.m_Pos = pos;
+         }        
          this.m_Hp = charConfig.currentHp;
          this.m_MaxHp =  charConfig.maxHp;
+         this.m_iType = charConfig.objtype;
+         this.m_pathKey = charConfig.pathId;
         // if(isSelf != true)
          {
             this.m_pMoveAi = new cMoveAi;
@@ -36,6 +47,12 @@ var ObjLogic = cc.Class({
          this.m_Dir = iDir;
          var fdirhudu = 45 * iDir/180 * Math.PI;         
          this.m_fDir = fdirhudu;
+     },
+
+     setPathList:function(akPos)
+     {
+         this.m_pathPos = akPos;
+         this.m_Pos = this.m_pathPos[0];
      },
 
      getLogicPos()

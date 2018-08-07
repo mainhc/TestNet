@@ -16,6 +16,19 @@ var ClientGuiCmd = cc.Class({
         this.GuiMsgObjThis[msgname] = pObjThis;
     },
 
+    unregisterClientGuiMsg:function(msgname){
+        var tempHandle = this.GuiMsgHandle[msgname];
+        if(tempHandle != null)
+        {
+             delete this.GuiMsgHandle[msgname];
+        }
+        var tempObjThis = this.GuiMsgObjThis[msgname];
+        if(tempObjThis != null)
+        {
+            delete this.GuiMsgObjThis[msgname];
+        }
+    },
+
     updateClientGuiCmd:function(dt){
         if(this.akClientGuiMsg.length > 0)
         {

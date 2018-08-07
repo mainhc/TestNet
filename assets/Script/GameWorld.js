@@ -3,8 +3,6 @@
 var cGameObjMgr = require("GameObjMgr").GameObjMgr;
 var cObjIDMgr = require("ObjIDMgr").ObjIDMgr;
 
-
-
 cc.Class({
     extends: cc.Component,
 
@@ -12,19 +10,21 @@ cc.Class({
   
         // defaults, set visually when attaching this script to the Canvas
         m_pMap:null,
-        m_startPos:null,         
+        m_startPos:null,
+        m_akPath:null,         
     },
 
     // use this for initialization
-    onLoad: function () {       
-        
+    onLoad: function () {           
        
         this.m_pMap = this.node.getChildByName("Map");  
         if(cc.GameObjMgr == null)
         {
             cc.GameObjMgr = new cGameObjMgr;
-            cc.GameObjMgr.initGameObjMgr(this.m_pMap);
+            cc.GameObjMgr.initGameObjMgr(this);
         }
+
+        this.m_akPath = {};
 
         if(cc.ObjIDMgr == null)
         {
@@ -62,13 +62,52 @@ cc.Class({
         cc.ObjIDMgr = null;
     },
 
-
-
     initMapPos()
     {
         var winsize = cc.director.getWinSize();
         this.m_pMap.setPosition(-winsize.width/2,-winsize.height/2);
+
+        this.initMapData();
+
+        //单机版创建主角        
+        var myClientId = cc.PlayerInfo.getMyPlayerID();       
+        cc.GameObjMgr.createGameObj(myClientId,10001,cc.p(400,300),true);   
+
+        //创建怪物
+        cc.GameObjMgr.createGameObj(0,10002,cc.p(0,0),false);
+
+
+             
     },  
+
+    initMapData()
+    {
+        var pTitleMap =  this.m_pMap.getComponent(cc.TiledMap);
+        if(pTitleMap == null)
+        {
+            return;
+        }
+        var akTempPro = pTitleMap.getProperties();
+        for(var key in akTempPro)
+        {
+            var strObj = akTempPro[key];
+            if(strObj != null)
+            {
+                 var akTemp = strObj.split(',');
+                 this.m_akPath[key] = akTemp;                
+            }
+        }            
+    },
+
+    getPathByKey:function(pathKey)
+    {
+        var akstrPos = this.m_akPath[pathKey];
+        if(akstrPos == undefined)
+        {
+            return null;
+        }
+        return akstrPos;
+    },
 
     onTouchBegan:function(event)
     {     

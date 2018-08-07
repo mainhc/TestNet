@@ -32,6 +32,7 @@ var ObjGrid = cc.Class({
 
 var GameObjMgr = cc.Class({
     properties: {
+        m_pGameWorld:null,
         m_pMap:null,
         m_akObjMap:null,
         m_akNetIdObjID:null,
@@ -42,18 +43,19 @@ var GameObjMgr = cc.Class({
         m_mapPixWidth:0,
         m_mapPixHeight:0,
         m_mapGridWidth:0,
-        m_mapGridHeight:0,
+        m_mapGridHeight:0,      
        
     },
 
-    initGameObjMgr(map)
+    initGameObjMgr(gameWorld)
     {
-        this.m_pMap = map;
+        this.m_pGameWorld = gameWorld;
+        this.m_pMap = gameWorld.m_pMap;
         this.m_akObjMap = {};
         this.m_akNetIdObjID = {};
         this.m_akObjIdNetID = {};
-        this.initObjGrid();
-       
+        this.m_akPath = {};
+        this.initObjGrid();       
     },
 
     initObjGrid()
@@ -82,7 +84,7 @@ var GameObjMgr = cc.Class({
                 ptempGrid.m_objIndex = iLoop * this.m_mapGridWidth + jLoop;
                 this.m_akGrid.push(ptempGrid); 
             }
-        }
+        } 
     },
 
     getMyObjView()
@@ -174,9 +176,34 @@ var GameObjMgr = cc.Class({
         nowGrid.addObjInGrid(objid);
     },
 
+    computePath:function(pathKey,logicObj)
+    {
+        if(this.m_pGameWorld == null)
+        {
+            return;
+        }
+        var akPos = this.m_pGameWorld.getPathByKey(pathKey);
+        if(akPos != null)
+        {
+            var iPosSize = akPos.length/2;
+            var akPostemp = [];
+            for(var iLoop=0;iLoop<iPosSize;iLoop++)
+            {
+                var posTemp = cc.p(akPos[iLoop*2],akPos[iLoop*2+1]);
+                akPostemp.push(posTemp);
+            }
+            logicObj.setPathList(akPostemp);
+        }
+    },
+
     createGameObj(netID,objTableid,Pos,isSelf)
     {
-        var pConfig = cc.TableMgr.getTabelConfigById("ObjView",objTableid);
+        var pConfigdata = cc.TableMgr.getTabelConfigById("ObjData",objTableid);
+        if(pConfigdata == null)
+        {
+            return;
+        }
+        var pConfig = cc.TableMgr.getTabelConfigById("ObjView",pConfigdata.objview);
         if(pConfig!= null)
         {
             var strChar = "char/" + pConfig.bodyview + '/' + pConfig.bodyview;
@@ -189,18 +216,24 @@ var GameObjMgr = cc.Class({
                     var pObjview = new cObjView();
                     var pObjLogic = new cObjLogic();
                     var tempPos = Pos;
-
-                    pObjLogic.initLogicObj(objId,tempPos,pConfig,isSelf);                    
+                    pObjLogic.initLogicObj(objId,tempPos,pConfigdata,isSelf);                                   
                     pObjview.initObj(objId,prefab,pObjLogic);
-                    var logicpos = pObjLogic.getLogicPos();
-                    pObjview.setPosition(logicpos);
+                                       
                     if(isSelf == true)
                     {
                        pSelf.m_pMyObjView =  pObjview;
                     }
+                    else
+                    {
+                        pSelf.computePath(pConfigdata.pathId,pObjLogic);   
+                    }
+                    var logicpos = pObjLogic.getLogicPos();
+                    pObjview.setPosition(logicpos);
+
                     pSelf.m_akObjMap[objId] = pObjview;
                     pSelf.m_akNetIdObjID[netID] = objId;
                     pSelf.m_akObjIdNetID[objId] = netID;
+
                     pSelf.m_pMap.addChild(pObjview);
                     var gridPos = pSelf.pixToGrid(startPos);
                     var gridtemp = pSelf.getGridByPos(gridPos); 
@@ -208,6 +241,8 @@ var GameObjMgr = cc.Class({
                     {
                         gridtemp.addObjInGrid(objId);
                     }
+
+
                 }
             });         
         }

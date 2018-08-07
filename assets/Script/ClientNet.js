@@ -6,6 +6,7 @@ var ClientNet = cc.Class({
        m_strServerIp:"",
        m_strIpPort:"",
        m_pWebSocket:null,
+       m_pSingleGame:true,
     },
 
     init:function()
@@ -24,6 +25,12 @@ var ClientNet = cc.Class({
         }
         this.m_strServerIp = svrIp;
         this.m_strIpPort = strPort;  
+        if(this.m_pSingleGame)
+        {
+            cc.PlayerInfo.setPlayerId(10000);
+            cc.director.loadScene("zhunbeiGo");
+            return;
+        }
         var strWs = "ws://" + this.m_strServerIp + ":" + this.m_strIpPort;
         try
         {

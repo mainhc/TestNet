@@ -1,5 +1,4 @@
-var tableMgr = cc.Class({
-  
+var tableMgr = cc.Class({ 
 
     properties: {
         m_akGameTabel:null,    
