@@ -142,6 +142,23 @@ var GameObjMgr = cc.Class({
         return resPos;
     },
 
+    gridToPix(gridPos)
+    {
+        var resPos = cc.p(0,0);
+        if(gridPos.x < 0 || gridPos.x > this.m_mapGridWidth)
+        {
+            return resPos;
+        }
+        if(gridPos.y < 0 || gridPos.y > this.m_mapGridHeight)
+        {
+            return resPos;
+        }       
+        resPos.x = gridPos.x * GridPix + GridPix/2;
+        resPos.y = gridPos.y * GridPix + GridPix/2;
+        return resPos;
+
+    },
+
     pixToIndex(pisPos)
     {
         var gridPos = this.pixToGrid(pisPos);
@@ -190,7 +207,8 @@ var GameObjMgr = cc.Class({
             for(var iLoop=0;iLoop<iPosSize;iLoop++)
             {
                 var posTemp = cc.p(akPos[iLoop*2],akPos[iLoop*2+1]);
-                akPostemp.push(posTemp);
+                var pixPos = this.gridToPix(posTemp);
+                akPostemp.unshift(pixPos);
             }
             logicObj.setPathList(akPostemp);
         }
@@ -218,7 +236,7 @@ var GameObjMgr = cc.Class({
                     var tempPos = Pos;
                     pObjLogic.initLogicObj(objId,tempPos,pConfigdata,isSelf);                                   
                     pObjview.initObj(objId,prefab,pObjLogic);
-                                       
+
                     if(isSelf == true)
                     {
                        pSelf.m_pMyObjView =  pObjview;
@@ -241,8 +259,6 @@ var GameObjMgr = cc.Class({
                     {
                         gridtemp.addObjInGrid(objId);
                     }
-
-
                 }
             });         
         }

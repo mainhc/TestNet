@@ -22,6 +22,10 @@ cc.Class({
         {
             pStartBtn.on('click',this.onZhunBeiStart,this);
         }
+
+        //test dai ma
+        var fdirhudu = 0;
+        var tempVec = cc.pForAngle(fdirhudu);
     },
 
     OnDestroy(){

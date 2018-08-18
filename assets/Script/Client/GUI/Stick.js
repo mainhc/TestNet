@@ -48,7 +48,7 @@ cc.Class({
         }
         this.m_fAngle = angle;
         this.m_pArrow.active = true;
-        cc.log("this.m_fAngle begin+++   " + this.m_fAngle)
+       // cc.log("this.m_fAngle begin+++   " + this.m_fAngle)
         this.updateArrow();
     },
 
@@ -71,7 +71,7 @@ cc.Class({
         }
 
         this.m_fAngle = angle;
-        cc.log("this.m_fAngle move+++   " + this.m_fAngle);
+       // cc.log("this.m_fAngle move+++   " + this.m_fAngle);
         this.updateArrow();
         if(this.m_pMyBojView != null)
         {

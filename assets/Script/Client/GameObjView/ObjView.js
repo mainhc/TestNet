@@ -86,6 +86,7 @@ var ObjView = cc.Class({
         var eState = this.m_objlogic.getObjState();
         var iDir = this.m_objlogic.m_Dir;
         var strActionName = this.getObjActionName(eState,iDir); 
+       // cc.log("+++updateAction++++ " + strActionName);
         var isFanzhan = this.isNeedFanZhuan(iDir);       
         var anistatetemp = this.m_pAni.getAnimationState(strActionName); 
         if(anistatetemp==null)

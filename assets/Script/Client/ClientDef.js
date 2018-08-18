@@ -1,4 +1,4 @@
-var GridPix = 256;
+var GridPix = 64;
 
 var eObjType = cc.Enum({
     eotNpc:1,
