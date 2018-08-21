@@ -1,3 +1,6 @@
+ //   插件 
+ //   https://github.com/knoxHuang/cstudio-anim-import
+
 
 var cClientNet = require("ClientNet").ClientNet;
 var cMsgMgr = require("MsgMgr").MsgMgr;
